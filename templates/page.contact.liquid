@@ -12,23 +12,23 @@
       {% endif %}
 
       <div class="contact-form form-vertical">
-        {%- assign formId = 'ContactForm' -%}
-        {% form 'contact', id: formId %}
-          {% include 'form-status', form: form, form_id: formId %}
+        {%- assign form_id = 'ContactForm' -%}
+        {% form 'contact', id: form_id %}
+          {% render 'form-status', form: form, form_id: form_id %}
         <div class="showback">
           <a href="{{shop.url}}">Back To Home </a>
         </div>
 		<div class="formhide">
           <div class="grid grid--half-gutters">
             <div class="grid__item medium-up--one-half">
-              <label for="{{ formId }}-name">{{ 'contact.form.name' | t }}</label>
-              <input type="text" id="{{ formId }}-name" name="contact[{{ 'contact.form.name' | t }}]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              <label for="{{ form_id }}-name">{{ 'contact.form.name' | t }}</label>
+              <input type="text" id="{{ form_id }}-name" name="contact[{{ 'contact.form.name' | t }}]" value="{% if form['name'] %}{{ form['name'] }}{% elsif customer %}{{ customer.name }}{% endif %}">
             </div>
             <div class="grid__item medium-up--one-half">
-              <label for="{{ formId }}-email">{{ 'contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+              <label for="{{ form_id }}-email">{{ 'contact.form.email' | t }} <span aria-hidden="true">*</span></label>
               <input
                 type="email"
-                id="{{ formId }}-email"
+                id="{{ form_id }}-email"
                 name="contact[email]"
                 autocorrect="off"
                 autocapitalize="off"
@@ -37,13 +37,13 @@
                 {%- if form.errors contains 'email' -%}
                   class="input--error"
                   aria-invalid="true"
-                  aria-describedby="{{ formId }}-email-error"
+                  aria-describedby="{{ form_id }}-email-error"
                 {%- endif -%}
                 >
               {%- if form.errors contains 'email' -%}
-                <span id="{{ formId}}-email-error" class="input-error-message">
+                <span id="{{ form_id}}-email-error" class="input-error-message">
                   <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
-                  {% include 'icon-error' %}
+                  {% render 'icon-error' %}
                   <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
                 </span>
               {%- endif -%}
@@ -66,8 +66,8 @@
              </select>
  		 </div>
         </div>
-          <label for="{{ formId }}-message">{{ 'contact.form.message' | t }}</label>
-          <textarea rows="10" id="{{ formId }}-message" name="contact[{{ 'contact.form.message' | t }}]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          <label for="{{ form_id }}-message">{{ 'contact.form.message' | t }}</label>
+          <textarea rows="10" id="{{ form_id }}-message" name="contact[{{ 'contact.form.message' | t }}]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
 <!-- 		<div id="re-captcha"></div> -->
           <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
       </div>
@@ -104,7 +104,6 @@ main#MainContent {
     border-radius: 2px;
 }
 </style>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 <script>
 //   var actCallback = function (response) {
 //     $('#ContactForm').prop("disabled", false);
