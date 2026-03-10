@@ -1,0 +1,35 @@
+<h1 class="text-center">{{section.settings.title}}</h1>
+<p>{{section.settings.content}}</p>
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": [
+      {
+    "type": "text",
+    "label": "Title",
+    "id": "title"
+    },
+    {
+    "type": "textarea",
+    "label": "Content",
+    "id": "content"
+    }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+div#shopify-section-register-title {
+    margin-bottom: 20px;
+}
+
+div#shopify-section-register-title p {
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

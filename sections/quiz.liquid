@@ -1,0 +1,556 @@
+	<section id="tab3-content">
+			<div data-tab-component>
+				<div role="tablist" aria-label="Tabbed sections">
+                      <div class="contact-form form-vertical">
+       			{%- assign formId = 'CustomerAccount' -%}
+        
+         		{% form 'create_customer', id: formId %} 
+                     {% if form.posted_successfully? %}
+                        <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                          Your Carnivore Profile and Scores are on their way to your email.
+                        </p>
+                      {% else %}
+                          {{ form.errors | default_errors }}
+                      {% endif %}
+                    <div class="showback">
+                      <a href="{{shop.url}}">Back To Home </a>
+                    </div>                    
+                    <div class="formhide">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+                    <div class="container" id="myWizard">  
+                       <hr>  
+                       <div class="progress">
+                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="6" style="width: 14.2857%;">
+                           Step 1 of 7
+                         </div>
+                       </div>
+
+                       <div class="navbar">
+                          <div class="navbar-inner">
+                                <ul class="nav nav-pills">
+                                   <li class="active"><a href="#step1" data-toggle="tab" data-step="1">Step 1</a></li>
+                                   <li><a href="#step2" data-toggle="tab" data-step="2">Step 2</a></li>
+                                   <li><a href="#step3" data-toggle="tab" data-step="3">Step 3</a></li>
+                                   <li><a href="#step4" data-toggle="tab" data-step="4">Step 4</a></li>
+                                   <li><a href="#step5" data-toggle="tab" data-step="5">Step 5</a></li>
+                                   <li><a href="#step6" data-toggle="tab" data-step="6">Step 6</a></li>
+                                   <li><a href="#step7" data-toggle="tab" data-step="7">Step 7</a></li>
+                                </ul>
+                          </div>
+                       </div>
+                       <div class="tab-content">
+                           {% assign count= 0 %} 
+         
+                            {% for block in section.blocks %}	 
+                             {% if count > 0 %}
+                                <div class="tab-pane fade " id="step{{count}}">
+                                  <div class="well"> 
+                                   <h3 for="mailingaddress">{{ block.settings.faqQuestion }}</h3>
+
+                                   {{ block.settings.qimage | img_url: 'master' | img_tag }}
+                                    
+                                   <div class="main-question"> 
+                                      <input id="question1" value="1" type="radio" name="customer[{{ "answer" | append: count }}]">
+                                      <input value="{{ block.settings.faqAnswer1 }}" type="hidden" name="customer[{{ "question" | append: count }}]">
+                                      <span>{{ block.settings.faqAnswer1 }}</span>
+                                    </div>
+                                    <div class="main-question">
+                                       <input id="question1" value="2" type="radio" name="customer[{{ "answer" | append: count }}]">
+                                        <input value="{{ block.settings.faqAnswer2 }}" type="hidden" name="customer[{{ "question" | append: count }}]">
+                                       <span>{{ block.settings.faqAnswer2 }}</span>
+                                    </div>
+                                    <div class="main-question">
+                                      <input id="question1" value="3" type="radio" name="customer[{{ "answer" | append: count }}]">
+                                       <input value="{{ block.settings.faqAnswer3 }}" type="hidden" name="customer[{{ "question" | append: count }}]">
+                                      <span>{{ block.settings.faqAnswer3 }}</span>
+                                    </div>
+                                    <div class="main-question">
+                                      <input id="question1" value="4" type="radio" name="customer[{{ "answer" | append: count }}]">
+                                      <input value="{{ block.settings.faqAnswer4 }}" type="hidden" name="customer[{{ "question" | append: count }}]"> 
+                                      <span>{{ block.settings.faqAnswer4 }}</span>
+                                    </div>
+                                    <div class="main-question">
+                                      <input id="question1" value="5" type="radio" name="customer[{{ "answer" | append: count }}]">
+                                       <input value="{{ block.settings.faqAnswer5 }}" type="hidden" name="customer[{{ "question" | append: count }}]">
+                                      <span>{{ block.settings.faqAnswer5 }}</span>   
+                                    </div>
+
+                                  </div>
+                                   <button class="btn btn-default btn-lg previous" href="#">Previous</button>
+                                   <button class="btn btn-default btn-lg next" href="#">Next</button>
+                                </div>
+                               
+                               
+                              {% endif %} 
+                              {% assign count = count | plus: 1 %}
+
+                              {% endfor %}
+                               <div class="tab-pane fade " id="step7">
+                                    <div class="well"> 
+                                       <div class="from">
+                                             <h2 class="custom-heading">Please enter your email and we will send you your results and recommendations.</h2>
+                                             <label for="first_name">Name</label>
+                                            <input type="text" value="" name="customer[first_name]" size="30" />
+
+                                            <label for="email">Email Address</label>
+                                            <input type="email" class="email" value=""  name="customer[email]" size="30" class="{% if form.errors contains 'email' %} input--error{% endif %}"
+                                            {% if form.email %} value="{{ form.email }}"{% endif %}
+                                            autocorrect="off"
+                                            autocapitalize="off"
+                                            autocomplete="email"
+                                            aria-required="true"
+                                            {%- if form.errors contains 'email' -%}
+                                              class="input--error"
+                                              aria-invalid="true"
+                                              aria-describedby="{{ formId }}-email-error"
+                                            {%- endif -%}/>
+                                            {%- if form.errors contains 'email' -%}
+                                            <span id="{{ formId }}-email-error" class="input-error-message">
+                                              <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                                              {% include 'icon-error' %}
+                                              <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                                            </span>
+                                          {%- endif -%}
+                                             <div class="error-message">
+                                               <span id="{{ formId }}-email-error" class="input-error-message">  </span>
+                                          </div>
+                                            <input type="hidden" value="123456" name="customer[password]" size="30" />
+                                            <input type="hidden" value="" class="score" name="customer[last_name]" size="30" />
+
+                                            <input type="button" class="btn quizbutton" value="{{ 'contact.form.submit' | t }}">
+                                       </div>
+                                   </div>
+                                   <a class="btn btn-default btn-lg previous" href="#">Previous</a>
+                                   <a class="btn btn-default btn-lg next" href="#">Next</a>
+                                </div>
+                             </div>  
+                          </div>
+                         
+
+
+					{% assign count= 0 %} 
+         
+						{% for block in section.blocks %}	 
+                        
+                        {% if count > 0 %} 
+                      {%comment%} {{ block.settings.qimage | img_url: 'large' | img_tag }} {% endcomment %}
+<!--                         <label for="mailingaddress">{{ block.settings.faqQuestion }}</label>
+                       <div class="main-question"> 
+                          <input id="question1" value="1" type="radio" name="customer[{{ "answer" | append: count }}]">
+                          <span>{{ block.settings.faqAnswer1 }}</span>
+                        </div>
+                      	<div class="main-question">
+                           <input id="question1" value="2" type="radio" name="customer[{{ "answer" | append: count }}]">
+                           <span>{{ block.settings.faqAnswer2 }}</span>
+                        </div>
+                        <div class="main-question">
+                          <input id="question1" value="3" type="radio" name="customer[{{ "answer" | append: count }}]">
+                          <span>{{ block.settings.faqAnswer3 }}</span>
+                        </div>
+                        <div class="main-question">
+                          <input id="question1" value="4" type="radio" name="customer[{{ "answer" | append: count }}]">
+                          <span>{{ block.settings.faqAnswer4 }}</span>
+                        </div>
+                        <div class="main-question">
+                          <input id="question1" value="5" type="radio" name="customer[{{ "answer" | append: count }}]">
+                          <span>{{ block.settings.faqAnswer5 }}</span>   
+                        </div>
+                        -->
+                        {% endif %} 
+                        {% assign count = count | plus: 1 %}
+							    	
+			            {% endfor %}
+<!--                         <h2 class="custom-heading">Please enter your email and we will send you your results and recommendations.</h2>
+                         <label for="first_name">Name</label>
+                        <input type="text" value="" name="customer[first_name]" size="30" />
+
+                        <label for="email">Email Address</label>
+                        <input type="email" class="email" value=""  name="customer[email]" size="30" class="{% if form.errors contains 'email' %} input--error{% endif %}"
+                        {% if form.email %} value="{{ form.email }}"{% endif %}
+                        autocorrect="off"
+                        autocapitalize="off"
+                        autocomplete="email"
+                        aria-required="true"
+                        {%- if form.errors contains 'email' -%}
+                          class="input--error"
+                          aria-invalid="true"
+                          aria-describedby="{{ formId }}-email-error"
+                        {%- endif -%}/>
+                        {%- if form.errors contains 'email' -%}
+                        <span id="{{ formId }}-email-error" class="input-error-message">
+                          <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                          {% include 'icon-error' %}
+                          <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                        </span>
+                      {%- endif -%}
+                         <div class="error-message">
+                           <span id="{{ formId }}-email-error" class="input-error-message">  </span>
+                      </div>
+                        <input type="hidden" value="123456" name="customer[password]" size="30" />
+                        <input type="hidden" value="" class="score" name="customer[last_name]" size="30" />
+                        </div>
+                        <input type="button" class="btn quizbutton" value="{{ 'contact.form.submit' | t }}"> -->
+                 {% endform %}       
+	            </div>
+              </div>
+	        </div>
+		</section>
+
+
+{% schema %}
+{
+	"blocks": [
+		{
+			"name": "Quiz Heading",
+			"type": "FAQHeading",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "text",
+					"id": "faqHeading",
+					"label": "Quiz Title",
+					"default": "Quiz"
+				}
+			]
+		},
+		
+		{
+			"name": "Quiz Q and A",
+			"type": "faqQandA",
+			"settings": [
+                {
+                  "type": "image_picker",
+                  "id": "qimage",
+                  "label": "Image"
+                },
+	            {
+	                "type": "text",
+	                "label": "Enter Question",
+	                "id": "faqQuestion",
+	                "default": "Quiz question content goes here"
+	            },
+	            {
+	                "type": "textarea",
+	                "label": "Enter Answer",
+	                "id": "faqAnswer1",
+	                "default": "Lorem ipsum dolor amit icit"
+	            },
+	            {
+	                "type": "textarea",
+	                "label": "Enter Answer 2",
+	                "id": "faqAnswer2",
+	                "default": "Lorem ipsum dolor amit icit"
+	            }
+				,
+	            {
+	                "type": "textarea",
+	                "label": "Enter Answer 3",
+	                "id": "faqAnswer3",
+	                "default": "Lorem ipsum dolor amit icit"
+	            }
+				,
+	            {
+	                "type": "textarea",
+	                "label": "Enter Answer 4",
+	                "id": "faqAnswer4",
+	                "default": "Lorem ipsum dolor amit icit"
+	            }
+				,
+	            {
+	                "type": "textarea",
+	                "label": "Enter Answer 5",
+	                "id": "faqAnswer5",
+	                "default": "Lorem ipsum dolor amit icit"
+	            }
+			]
+		}
+	]
+}
+{% endschema %}
+<style>
+.well .from>label {
+    font-size: 18px !important;
+    float: left;
+}
+
+.from {
+    width: 80%;
+    margin: auto;
+}
+
+.from .custom-heading {
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 33px;
+}
+div#myWizard {
+    width: 60%;
+}
+
+.main-question {
+    border: 1px solid #22ab87;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+input[type="radio"] {width: 20px !important;height: 20px;vertical-align: text-bottom;}
+.well {
+    background: transparent;
+    text-align: center;
+}
+div#myWizard {
+    width: 60%;
+     margin-bottom: 90px;
+}
+.well label {
+    text-align: center;
+    display: block;
+    font-size: 30px !important;
+}
+
+.main-question {
+    text-align: left;
+}
+
+div#myWizard .navbar {
+    display: none;
+}
+form#CustomerAccount {
+    max-width: 100%;
+}
+
+.page-width {
+    width: 100%;
+    max-width: 100%;
+}
+main#MainContent form label {
+    color: #fff;
+}
+main#MainContent {
+    background: #2b4159;
+}
+.section-header.text-center h1 {
+    color: #fff;
+}
+  .showback{
+   	display:none; 
+  }
+  .showback {
+    text-align: center;
+    margin: 20px;
+}
+  .showback a {
+    background: #35b18c;
+    padding: 10px;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+.tab-pane .btn.btn-default.btn-lg.next {
+    background: #1A8165;
+    color: #fff;
+    border: none;
+    float: right;
+}
+  .tab-pane .previous{
+   background: #1A8165;
+    color: #fff;
+    border: none;
+}
+.tab-pane:last-child .btn.btn-default.btn-lg.next {
+    display: none;
+}
+</style>
+{% stylesheet %}
+      section#tab3-content label {
+    font-size: 22px;
+    padding: 5px 0px;
+}
+      form#ContactForm2 span {
+    padding-right: 11px;
+}
+      input.btn.quizbutton {
+    display: inherit;
+    margin: 40px 0px;
+}
+      main#MainContent {
+    background: #2c415a;
+    color: #fff;
+}
+      label, span {
+    color: #fff;
+}
+      form#CustomerAccount {
+    max-width: 60%;
+    margin: auto;
+}
+.tab-pane:first-child .previous {
+    display: none;
+}
+{% endstylesheet %}
+
+{% javascript %}
+jQuery('input.btn.quizbutton').click(function(e){
+e.preventDefault()
+  
+var val = jQuery('input[name="customer[answer1]"]:checked').val();
+if(val == undefined){
+  val = 0;
+  $(".tab-pane .next").attr("disabled")
+}else{
+  $(".tab-pane .next").removeAttr("disabled")
+}
+ var val2 = jQuery('input[name="customer[answer2]"]:checked').val(); 
+var val3 = jQuery('input[name="customer[answer3]"]:checked').val(); 
+var val4 = jQuery('input[name="customer[answer4]"]:checked').val(); 
+var val5 = jQuery('input[name="customer[answer5]"]:checked').val(); 
+var val6 = jQuery('input[name="customer[answer6]"]:checked').val(); 
+if(val2 == undefined){
+  val2 = 0;
+}
+if(val3 == undefined){
+  val3 = 0;
+  
+}
+if(val4 == undefined){
+  val4 = 0;
+}
+if(val5 == undefined){
+  val5 = 0;
+}
+if(val6 == undefined){
+  val6 = 0;
+}
+var sum = parseInt(val)+parseInt(val2)+parseInt(val3)+parseInt(val4)+parseInt(val5)+parseInt(val6);
+jQuery('.score').val(sum);
+console.log(sum)
+
+var email = jQuery('input.email').val();
+if(email == ''){
+  jQuery(".error-message").show();
+  jQuery('.input-error-message').text("Email is required");
+}else{
+ jQuery('#CustomerAccount').submit();
+}
+
+})
+if($( ".form-message" ).hasClass( "form-message--success" )){
+$(".showback").show();
+$(".formhide").hide();
+}
+
+$('#step1').addClass('in active');
+
+$('.next').click(function(){
+
+  var nextId = $(this).parents('.tab-pane').next().attr("id");
+  console.log(nextId);
+  $('[href="#'+nextId+'"]').tab('show');
+  return false;
+  
+})
+$('.previous').click(function(){
+
+  var pId = $(this).parents('.tab-pane').prev().attr("id");
+  console.log(pId);
+  $('[href="#'+pId+'"]').tab('show');
+  return false;
+  
+})
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  
+  //update progress
+  var step = $(e.target).data('step');
+  var percent = (parseInt(step) / 7) * 100;
+  
+  $('.progress-bar').css({width: percent + '%'});
+  $('.progress-bar').text("Step " + step + " of 7");
+  
+  //e.relatedTarget // previous tab
+  
+})
+
+$('.first').click(function(){
+
+  $('#myWizard a:first').tab('show')
+
+})
+jQuery(document).ready(function(){
+   var val = jQuery('input[name="customer[answer1]"]:checked').val();
+if(val == undefined){
+  $("#step1.tab-pane .next").prop("disabled", true);
+}
+ jQuery('input[name="customer[answer1]"]').click(function(){
+   var val = jQuery('input[name="customer[answer1]"]:checked').val();
+   if(val == undefined){
+      $("#step1.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step1.tab-pane .next").prop("disabled", false);
+    }
+})
+var val2 = jQuery('input[name="customer[answer2]"]:checked').val(); 
+var val3 = jQuery('input[name="customer[answer3]"]:checked').val(); 
+var val4 = jQuery('input[name="customer[answer4]"]:checked').val(); 
+var val5 = jQuery('input[name="customer[answer5]"]:checked').val(); 
+var val6 = jQuery('input[name="customer[answer6]"]:checked').val(); 
+if(val2 == undefined){
+  $(".tab-pane .next").prop("disabled", true);
+}
+jQuery('input[name="customer[answer2]"]').click(function(){
+   var val = jQuery('input[name="customer[answer2]"]:checked').val();
+   if(val == undefined){
+      $("#step2.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step2.tab-pane .next").prop("disabled", false);
+    }
+})
+if(val3 == undefined){
+  $(".tab-pane .next").prop("disabled", true);
+  
+}
+jQuery('input[name="customer[answer3]"]').click(function(){
+   var val = jQuery('input[name="customer[answer3]"]:checked').val();
+   if(val == undefined){
+      $("#step3.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step3.tab-pane .next").prop("disabled", false);
+    }
+})
+if(val4 == undefined){
+  $(".tab-pane .next").prop("disabled", true);
+}
+jQuery('input[name="customer[answer4]"]').click(function(){
+   var val = jQuery('input[name="customer[answer4]"]:checked').val();
+   if(val == undefined){
+      $("#step4.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step4.tab-pane .next").prop("disabled", false);
+    }
+})
+if(val5 == undefined){
+  $(".tab-pane .next").prop("disabled", true);
+}
+jQuery('input[name="customer[answer5]"]').click(function(){
+   var val = jQuery('input[name="customer[answer5]"]:checked').val();
+   if(val == undefined){
+      $("#step5.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step5.tab-pane .next").prop("disabled", false);
+    }
+})
+if(val6 == undefined){
+  $(".tab-pane .next").prop("disabled", true);
+}
+})
+jQuery('input[name="customer[answer6]"]').click(function(){
+   var val = jQuery('input[name="customer[answer6]"]:checked').val();
+   if(val == undefined){
+      $("#step6.tab-pane .next").prop("disabled", true);
+    }else{
+      $("#step6.tab-pane .next").prop("disabled", false);
+    }
+})
+
+{% endjavascript %}

@@ -1,0 +1,55 @@
+<div class="page-width">
+  <div class="grid">
+    <div class="collection-hero">
+          <div class="collection-hero__image ratio-container lazyload js"
+               data-bgset="{% include 'bgset', image: collection.image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               data-image-loading-animation
+          ></div>
+          <noscript>
+            <div class="collection-hero__image" style="background-image: url({{ collection.image | img_url: '2048x600', crop: 'top' }});"></div>
+          </noscript>
+          <div class="collection-hero__title-wrapper">
+            <h1 class="collection-hero__title page-width">
+                <span class="visually-hidden">{{ 'collections.general.collection_label' | t }}: </span>
+                {{ collection.title }}
+            </h1>
+          </div>
+      </div>
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+<!--         <h1>{{ page.title }}</h1> -->
+      </div>
+
+      <div class="rte about-content">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+main#MainContent {
+    background: #cccccc;
+}
+.rte.about-content {
+    margin-bottom: 100px;
+    margin-top: 40px;
+}
+
+.rte.about-content p {
+    text-align: justify;
+}
+.rte.about-content i {
+    font-size: 40px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.rte.about-content a {
+    border: none;
+}
+.rte.about-content h2 {
+    font-size: 35px;
+}
+</style>

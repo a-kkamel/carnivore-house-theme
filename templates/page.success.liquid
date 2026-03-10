@@ -1,0 +1,47 @@
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+		
+      <div class="rte">
+        <div class="form-message form-message--success success-page" tabindex="-1" data-form-status>
+          {{ page.content }}
+        </div>
+        <div class="showback success">
+           <a href="{{shop.url}}">Back To Home </a>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+
+main#MainContent form label {
+    color: #fff;
+}
+main#MainContent {
+    background: #2b4159;
+}
+.section-header.text-center h1 {
+    color: #fff;
+}
+  
+  .showback {
+    text-align: center;
+    margin: 20px;
+}
+  .showback a {
+    background: #35b18c;
+    padding: 10px !important;
+    color: #fff;
+    border: 1px solid transparent !important;
+    border-radius: 2px;
+    text-decoration: none;
+}
+  h1{
+   text-transform:uppercase; 
+  }
+</style>

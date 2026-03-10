@@ -1,0 +1,182 @@
+<section class="b2b-hero">
+  <div class="b2b-hero__overlay"></div>
+  <div class="b2b-hero__content">
+    <div class="b2b-hero__badge">Wholesale Portal</div>
+    <h1 class="b2b-hero__title">
+      Welcome back,<br>
+      <span class="b2b-hero__name">{{ customer.first_name }}</span>
+    </h1>
+    <p class="b2b-hero__sub">Premium cuts. Trade pricing. Built for serious buyers.</p>
+    <div class="b2b-hero__stats">
+      <div class="b2b-hero__stat">
+        <span class="b2b-hero__stat-value">USDA</span>
+        <span class="b2b-hero__stat-label">Certified</span>
+      </div>
+      <div class="b2b-hero__stat-divider"></div>
+      <div class="b2b-hero__stat">
+        <span class="b2b-hero__stat-value">50 lbs</span>
+        <span class="b2b-hero__stat-label">Min. Order</span>
+      </div>
+      <div class="b2b-hero__stat-divider"></div>
+      <div class="b2b-hero__stat">
+        <span class="b2b-hero__stat-value">NET 30</span>
+        <span class="b2b-hero__stat-label">Payment Terms</span>
+      </div>
+    </div>
+    <div class="b2b-hero__actions">
+      <a href="#b2b-catalog" class="b2b-hero__cta-primary">Browse Catalog</a>
+      <a href="#b2b-bulk-order" class="b2b-hero__cta-secondary">Bulk Order Form</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.b2b-hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  background-color: #0d0d0b;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.b2b-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(10, 8, 5, 0.96) 0%,
+    rgba(10, 8, 5, 0.82) 55%,
+    rgba(10, 8, 5, 0.5) 100%
+  );
+  z-index: 2;
+}
+
+.b2b-hero__content {
+  position: relative;
+  z-index: 3;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 6rem 4rem;
+  width: 100%;
+}
+
+.b2b-hero__badge {
+  display: inline-block;
+  border: 1px solid #c9a96e;
+  color: #c9a96e;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  margin-bottom: 2rem;
+  font-family: sans-serif;
+}
+
+.b2b-hero__title {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 400;
+  color: #f5f0e8;
+  line-height: 1.05;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.b2b-hero__name {
+  color: #c9a96e;
+  font-style: italic;
+}
+
+.b2b-hero__sub {
+  color: #9a9080;
+  font-size: 1.1rem;
+  max-width: 480px;
+  line-height: 1.7;
+  margin: 1.5rem 0 3rem;
+  font-family: sans-serif;
+}
+
+.b2b-hero__stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.b2b-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.b2b-hero__stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f5f0e8;
+  letter-spacing: 0.05em;
+  font-family: sans-serif;
+}
+
+.b2b-hero__stat-label {
+  font-size: 0.7rem;
+  color: #6b6055;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+}
+
+.b2b-hero__stat-divider {
+  width: 1px;
+  height: 40px;
+  background: #2a2520;
+}
+
+.b2b-hero__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.b2b-hero__cta-primary {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: #c9a96e;
+  color: #0a0806;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: sans-serif;
+  transition: background 0.2s;
+}
+
+.b2b-hero__cta-primary:hover { background: #e0c080; }
+
+.b2b-hero__cta-secondary {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  border: 1px solid #3a342c;
+  color: #9a9080;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.b2b-hero__cta-secondary:hover {
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+
+@media (max-width: 768px) {
+  .b2b-hero__content { padding: 4rem 1.5rem; }
+  .b2b-hero__stats { gap: 1.2rem; }
+  .b2b-hero__stat-value { font-size: 1.2rem; }
+}
+</style>

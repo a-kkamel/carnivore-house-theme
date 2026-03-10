@@ -1,0 +1,247 @@
+{% comment %}
+  Order Form Section (Online Store 2.0)
+  - Lists products from a chosen collection
+  - Lets users enter quantities, select variants, add multiple items to cart in one click
+{% endcomment %}
+
+<section class="order-form container">
+  <div class="order-form__header">
+    {% if section.settings.heading != blank %}
+      <h1>{{ section.settings.heading }}</h1>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p>{{ section.settings.subheading }}</p>
+    {% endif %}
+  </div>
+
+  {% assign coll = section.settings.collection %}
+  {% if coll == blank %}
+    <p>Please select a collection in the section settings.</p>
+  {% else %}
+    {% paginate coll.products by section.settings.page_size %}
+      <form id="order-form">
+        <div class="order-form__controls" style="margin: 0 0 1rem 0;">
+          <label for="order-notes" style="display:block; font-weight:600; margin-bottom:0.25rem;">Order notes (optional)</label>
+          <textarea id="order-notes" name="note" rows="2" style="width:100%; max-width:700px;"></textarea>
+        </div>
+
+        <div class="order-form__table-wrap" style="overflow:auto;">
+          <table class="order-form__table" style="width:100%; border-collapse:collapse; min-width:720px;">
+            <thead>
+              <tr>
+                {% if section.settings.show_image %}
+                  <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Image</th>
+                {% endif %}
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Product</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Variant</th>
+                <th style="text-align:right; padding:8px; border-bottom:1px solid #ddd;">Price</th>
+                <th style="text-align:center; padding:8px; border-bottom:1px solid #ddd; width:120px;">Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in coll.products %}
+                <tr data-product-id="{{ product.id }}">
+ {% if section.settings.show_image %}
+  <td style="padding:8px; border-bottom:1px solid #eee;">
+    <a href="{{ product.url }}">
+      {% assign img = product.featured_media.preview_image | default: product.featured_image %}
+      {% if img %}
+        <img
+          src="{{ img | image_url: '120x120' }}"
+          alt="{{ product.title | escape }}"
+          width="120"
+          height="120"
+          loading="lazy"
+          style="border-radius:6px; object-fit:cover;">
+      {% else %}
+        <span style="font-size:12px; color:#888;">No image</span>
+      {% endif %}
+    </a>
+  </td>
+{% endif %}
+                  <td style="padding:8px; border-bottom:1px solid #eee;">
+                    <a href="{{ product.url }}" style="text-decoration:none; font-weight:600;">{{ product.title }}</a>
+                    {% if product.vendor and section.settings.show_vendor %}
+                      <div style="font-size:12px; color:#666;">{{ product.vendor }}</div>
+                    {% endif %}
+                  </td>
+
+                  <td style="padding:8px; border-bottom:1px solid #eee;">
+                    {% if product.has_only_default_variant %}
+                      {% assign v = product.variants.first %}
+                      <input type="hidden" class="of-variant-id" value="{{ v.id }}">
+                      <span class="of-variant-title">{{ v.title }}</span>
+                    {% else %}
+                      <select class="of-variant-id" style="min-width:220px;">
+                        {% for v in product.variants %}
+                          <option value="{{ v.id }}"
+                                  data-price="{{ v.price | money_with_currency }}"
+                                  data-price-raw="{{ v.price }}"
+                                  {% unless v.available %}disabled{% endunless %}>
+                            {{ v.title }}{% unless v.available %} — Sold out{% endunless %}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    {% endif %}
+                  </td>
+
+                  <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">
+                    {% assign pv = product.selected_or_first_available_variant %}
+                    <span class="of-price" data-default="{{ pv.price | money_with_currency }}">{{ pv.price | money_with_currency }}</span>
+                  </td>
+
+                  <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">
+                    <input type="number" min="0" step="1" class="of-qty" value="0" style="width:80px; text-align:center; padding:6px; border:1px solid #ccc; border-radius:6px;">
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="order-form__actions" style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+          <button type="button" id="of-add" style="padding:10px 16px; border-radius:10px; border:1px solid #222; background:#222; color:#fff; cursor:pointer;">
+            Add selected to cart
+          </button>
+          <button type="button" id="of-add-checkout" style="padding:10px 16px; border-radius:10px; border:1px solid #222; background:transparent; color:#222; cursor:pointer;">
+            Add & Checkout
+          </button>
+        </div>
+      </form>
+
+      {% if paginate.pages > 1 %}
+        <div class="order-form__pagination" style="margin-top:18px;">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}">← Previous</a>
+          {% endif %}
+          <span style="margin:0 8px;">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}">Next →</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  {% endif %}
+</section>
+
+<script>
+(function() {
+  function moneyFormat(cents) {
+    try {
+      // Best effort: rely on data-price displayed; fallback to cents/100
+      return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ shop.currency }}' });
+    } catch(e) {
+      return (cents / 100).toFixed(2) + ' {{ shop.currency }}';
+    }
+  }
+
+  // Update price display when variant selection changes
+  document.querySelectorAll('.of-variant-id').forEach(function(el) {
+    if (el.tagName.toLowerCase() === 'select') {
+      el.addEventListener('change', function() {
+        var row = el.closest('tr');
+        var priceCell = row.querySelector('.of-price');
+        var selected = el.options[el.selectedIndex];
+        var raw = selected.getAttribute('data-price-raw');
+        if (raw) {
+          priceCell.textContent = moneyFormat(parseInt(raw, 10));
+        } else {
+          priceCell.textContent = priceCell.getAttribute('data-default');
+        }
+      });
+    }
+  });
+
+  async function updateCartNote(note) {
+    try {
+      await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify({ note: note || '' })
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  async function addItems(items) {
+    const res = await fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify({ items: items })
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      throw new Error(t || 'Failed to add to cart');
+    }
+    return res.json();
+  }
+
+  function gatherItems() {
+    var rows = Array.from(document.querySelectorAll('tr[data-product-id]'));
+    var items = [];
+    rows.forEach(function(row) {
+      var qtyInput = row.querySelector('.of-qty');
+      var qty = parseInt(qtyInput && qtyInput.value ? qtyInput.value : '0', 10);
+      if (qty > 0) {
+        var variantInput = row.querySelector('.of-variant-id');
+        var variantId = variantInput.tagName.toLowerCase() === 'select'
+          ? variantInput.value
+          : variantInput.value;
+        items.push({ id: Number(variantId), quantity: qty });
+      }
+    });
+    return items;
+  }
+
+  async function handleAdd(goCheckout) {
+    const items = gatherItems();
+    const note = document.getElementById('order-notes')?.value || '';
+
+    if (items.length === 0) {
+      alert('Enter a quantity for at least one product.');
+      return;
+    }
+
+    // Save note, then add items
+    await updateCartNote(note);
+    await addItems(items);
+
+    if (goCheckout) {
+      window.location.href = '/checkout';
+    } else {
+      window.location.href = '/cart';
+    }
+  }
+
+  document.getElementById('of-add')?.addEventListener('click', function() {
+    handleAdd(false).catch(function(err){ alert(err.message || 'Error adding to cart.'); });
+  });
+  document.getElementById('of-add-checkout')?.addEventListener('click', function() {
+    handleAdd(true).catch(function(err){ alert(err.message || 'Error adding to cart.'); });
+  });
+})();
+</script>
+
+<style>
+  .order-form.container { max-width: 1100px; margin: 0 auto; padding: 12px; }
+  .order-form__header h1 { margin-bottom: .25rem; }
+  .order-form__table th, .order-form__table td { font-size: 14px; }
+  @media (max-width: 760px) {
+    .order-form__table { min-width: 600px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Order form",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Quick Order" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Add multiple items at once." },
+    { "type": "collection", "id": "collection", "label": "Collection to show" },
+    { "type": "range", "id": "page_size", "label": "Products per page", "min": 10, "max": 100, "step": 10, "default": 50 },
+    { "type": "checkbox", "id": "show_image", "label": "Show product image", "default": true },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Order form" }]
+}
+{% endschema %}

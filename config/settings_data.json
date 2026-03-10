@@ -1,0 +1,976 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "color_text": "#3a3a3a",
+    "color_body_text": "#323332",
+    "color_sale_text": "#22ad87",
+    "color_button": "#22ad87",
+    "color_image_overlay_text": "#ffffff",
+    "type_header_font": "nunito_sans_n7",
+    "type_header_base_size": 24,
+    "type_base_font": "maven_pro_n4",
+    "type_base_size": 15,
+    "eidqurbani": "shopify://shop_images/Step1_Would_You_Consider_yourself_a_pit_master_or_a_beginner-min.jpg",
+    "eidqurbaniproduct": "eid-qurbani",
+    "favicon": "shopify://shop_images/IMG_3382.jpg",
+    "checkout_logo_image": "shopify://shop_images/Asset_1_4x_d9805f7a-4107-4a0a-b14a-38d4bfc20b67.png",
+    "checkout_logo_position": "center",
+    "checkout_logo_size": "large",
+    "checkout_body_background_color": "#ebebeb",
+    "checkout_sidebar_background_color": "#ebebeb",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "align_logo": "center",
+          "logo": "shopify://shop_images/Asset_1_4x_d9805f7a-4107-4a0a-b14a-38d4bfc20b67.png",
+          "logo_max_width": 250,
+          "main_linklist": "new-menu",
+          "message": false,
+          "home_page_only": true,
+          "message_text": "Order Sunday to Wednesday For the Fastest Delivery  FREE Jerky Shipping for orders $50+ FLAT RATE $25 West Coast Shipping for orders $125+                       FLAT RATE $50 Shipping Elsewhere for orders $200+          No Weekend or Holidays Shipping...",
+          "message_link": "#mailmunch-pop-1022446",
+          "color_bg": "#22ad87",
+          "color_text": "#ffffff"
+        }
+      },
+      "hero-1": {
+        "type": "hero",
+        "disabled": true,
+        "settings": {
+          "image": "shopify://shop_images/Asset_1.jpg",
+          "alignment": "center",
+          "hero_layout": "full_width",
+          "hero_size": "large",
+          "text_size": "large",
+          "title": "CARNIVORE HOUSE",
+          "text": "",
+          "button_label": "ORDER NOW",
+          "button_link": "shopify://collections"
+        }
+      },
+      "feature-row": {
+        "type": "feature-row",
+        "disabled": true,
+        "settings": {
+          "layout": "right",
+          "title": "Coming Soon",
+          "text": "<p>Special Offer 10% Off</p>",
+          "button_label": "",
+          "button_link": ""
+        }
+      },
+      "feature-columns": {
+        "type": "feature-columns",
+        "blocks": {
+          "feature-columns-0": {
+            "type": "text_block",
+            "settings": {
+              "enable_image": true,
+              "image": "shopify://shop_images/ICON_with_Name-18.png",
+              "title": "100% Zabihah  Halal Certified",
+              "text": "",
+              "button_label": "",
+              "button_link": ""
+            }
+          },
+          "feature-columns-1": {
+            "type": "text_block",
+            "settings": {
+              "enable_image": true,
+              "image": "shopify://shop_images/ICON_with_Name-13.png",
+              "title": "Hand-Picked  & Locally Raised",
+              "text": "",
+              "button_label": "",
+              "button_link": ""
+            }
+          },
+          "feature-columns-2": {
+            "type": "text_block",
+            "settings": {
+              "enable_image": true,
+              "image": "shopify://shop_images/ICON_with_Name-14.png",
+              "title": "Hard-to-Find Premium Cuts",
+              "text": "",
+              "button_label": "",
+              "button_link": ""
+            }
+          }
+        },
+        "block_order": [
+          "feature-columns-0",
+          "feature-columns-1",
+          "feature-columns-2"
+        ],
+        "settings": {
+          "title": "WHY CARNIVORE HOUSE?",
+          "align_text": "center"
+        }
+      },
+      "collection": {
+        "type": "collection",
+        "settings": {
+          "title": "Featured collection",
+          "collection": "",
+          "grid": 4,
+          "rows": 2,
+          "show_vendor": false,
+          "show_view_all": false
+        }
+      },
+      "quotes": {
+        "type": "quotes",
+        "blocks": {
+          "quotes-0": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>",
+              "author": "Author's name"
+            }
+          },
+          "quotes-1": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>",
+              "author": "Author's name"
+            }
+          },
+          "quotes-2": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>",
+              "author": "Author's name"
+            }
+          }
+        },
+        "block_order": [
+          "quotes-0",
+          "quotes-1",
+          "quotes-2"
+        ],
+        "settings": {
+          "title": ""
+        }
+      },
+      "image-bar": {
+        "type": "image-bar",
+        "blocks": {
+          "image-bar-0": {
+            "type": "image",
+            "settings": {
+              "alignment": "center",
+              "link": "",
+              "cta_label": ""
+            }
+          },
+          "image-bar-1": {
+            "type": "image",
+            "settings": {
+              "alignment": "center",
+              "link": "",
+              "cta_label": ""
+            }
+          },
+          "image-bar-2": {
+            "type": "image",
+            "settings": {
+              "alignment": "center",
+              "link": "",
+              "cta_label": ""
+            }
+          }
+        },
+        "block_order": [
+          "image-bar-0",
+          "image-bar-1",
+          "image-bar-2"
+        ],
+        "disabled": true,
+        "settings": {
+          "section_height": "small"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "a4c6c327-040b-4da4-b755-dcdb3b0ec6e8": {
+            "type": "link_list",
+            "disabled": true,
+            "settings": {
+              "payicons": "shopify://shop_images/WhatsApp_Image_2021-04-10_at_9.16.08_PM_c5c9fc4c-8a2b-42fd-9518-4b24809bac55.jpg"
+            }
+          },
+          "31abd0e6-0293-468f-b1cd-31b75e7b74df": {
+            "type": "link_list",
+            "settings": {
+              "payicons": "shopify://shop_images/applepay-color.png"
+            }
+          },
+          "fc4fdba2-4018-420d-aec8-b94b9eece735": {
+            "type": "link_list",
+            "disabled": true,
+            "settings": {
+              "payicons": "shopify://shop_images/WhatsApp_Image_2021-04-10_at_9.16.02_PM.jpg"
+            }
+          },
+          "7ca28b22-3d46-4403-8da6-97916090ab26": {
+            "type": "link_list",
+            "disabled": true,
+            "settings": {
+              "payicons": "shopify://shop_images/f4709a06-43e8-44b7-8c68-9e8785b3e30f.jpg"
+            }
+          },
+          "70596759-a6d0-40ed-8ad5-4afd126ab6b3": {
+            "type": "link_list",
+            "settings": {
+              "payicons": "shopify://shop_images/googlepay-color.png"
+            }
+          },
+          "a3cbb77b-7bab-43e2-a030-3a69bd20799f": {
+            "type": "link_list",
+            "settings": {
+              "payicons": "shopify://shop_images/mastercard-color.png"
+            }
+          },
+          "8b540789-a514-4e1f-a8ea-158ba653ce4c": {
+            "type": "link_list",
+            "settings": {
+              "payicons": "shopify://shop_images/paypal-color.png"
+            }
+          }
+        },
+        "block_order": [
+          "a4c6c327-040b-4da4-b755-dcdb3b0ec6e8",
+          "31abd0e6-0293-468f-b1cd-31b75e7b74df",
+          "fc4fdba2-4018-420d-aec8-b94b9eece735",
+          "7ca28b22-3d46-4403-8da6-97916090ab26",
+          "70596759-a6d0-40ed-8ad5-4afd126ab6b3",
+          "a3cbb77b-7bab-43e2-a030-3a69bd20799f",
+          "8b540789-a514-4e1f-a8ea-158ba653ce4c"
+        ],
+        "settings": {
+          "facebook": "https://www.facebook.com/Carnivorehouse/",
+          "instagram": "https://www.instagram.com/carnivore_house/",
+          "tiktok": "http://tiktok.com/@carnivorehouse",
+          "youtube": "",
+          "whatsapp": "+13094686328"
+        }
+      },
+      "1608999044c6d7b253": {
+        "type": "custom-content",
+        "blocks": {
+          "1608999044c6d7b253-0": {
+            "type": "text",
+            "settings": {
+              "title": "MEAT YOUR PASSION!",
+              "text": "<p>Ding Ding Ding -It’s Dinner time! At Carnivore House, we believe that <strong>every good meal begins with a great meat!</strong> Whether it’s a slow-braised beef brisket or juicy lamb chops grilled to perfection, we know that using superior ingredients is the secret to a mouthwatering meal. So we offer clean, healthy, locally-raised meat and poultry for the<strong> freshest, most delicious meat possible.</strong> Every animal is <strong>hand-picked at harvest time</strong> and humanely finished, with Zabihah Halal certification agents on-site to approve processing. </p>",
+              "width": "50%",
+              "alignment": "top-middle",
+              "align_text": "left"
+            }
+          },
+          "f9484238-855f-40e1-b171-b7454471855c": {
+            "type": "text",
+            "settings": {
+              "title": "BUT WE GO BEYOND THAT. ",
+              "text": "<p>We feel that every meal should be guilt-free and we know that good meat starts on the farm. So, we only work with local farms in the Pacific Northwest that meet the highest standards of our faith, ensuring each animal is raised well, fed a healthy natural halal diet, and treated with kindness and compassion from start to finish.  <br/><br/>At Carnivore House, we know finding the right cut of meat can be hard in a traditional halal butcher’s shop, so we offer premium gourmet cuts, smoked sausages seasoned to perfection, delicious deli meats and tender, flavor-packed jerky that will satisfy all your carnivore-cravings.  </p><p>With Carnivore House, you can dine the way you’ve always wanted to, completely guilt-free.  </p><p>We invite you to treat yourself and your family to the very BEST Zabihah Halal has to offer. Join us at Carnivore House and <em>meat your passion!</em> </p>",
+              "width": "50%",
+              "alignment": "top-middle",
+              "align_text": "left"
+            }
+          },
+          "dccb4968-2176-45e8-9885-22fcd863e7a8": {
+            "type": "html",
+            "settings": {
+              "code": "<div style=\"text-align: center\"><a class=\"btn\" href=\"https://carnivorehouse.com/pages/about-us\">read more</a></div>",
+              "width": "100%"
+            }
+          }
+        },
+        "block_order": [
+          "1608999044c6d7b253-0",
+          "f9484238-855f-40e1-b171-b7454471855c",
+          "dccb4968-2176-45e8-9885-22fcd863e7a8"
+        ],
+        "settings": {
+          "title": "read_more"
+        }
+      },
+      "1608999069e6f0c001": {
+        "type": "newsletter",
+        "disabled": true,
+        "settings": {
+          "section_title": "Subscribe to newsletter and offers",
+          "subheading": "",
+          "show_background": true
+        }
+      },
+      "1608999854df4e50ba": {
+        "type": "rich-text",
+        "disabled": true,
+        "settings": {
+          "full_width": false,
+          "section_title": "Gallery",
+          "text": "",
+          "text_size": "medium"
+        }
+      },
+      "161331985362e98c78": {
+        "type": "custom-content",
+        "blocks": {
+          "161331985362e98c78-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/Asset_2_4x_da73f062-98e7-4721-bdfe-5b107b646752.jpg",
+              "width": "50%",
+              "alignment": "center"
+            }
+          },
+          "3607f018-a0cd-4ae6-9536-170b1053fc84": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/shutterstock_184074431.jpg",
+              "width": "50%",
+              "alignment": "center"
+            }
+          }
+        },
+        "block_order": [
+          "161331985362e98c78-1",
+          "3607f018-a0cd-4ae6-9536-170b1053fc84"
+        ],
+        "disabled": true,
+        "settings": {
+          "title": ""
+        }
+      },
+      "cart-template": {
+        "type": "cart-template",
+        "settings": {
+          "cart_ajax_enable": true,
+          "cart_notes_enable": true,
+          "freeshipping": "",
+          "generalpopup": "",
+          "showgeneralpopup": "",
+          "fourtydoller": "",
+          "conditionprice": ""
+        }
+      },
+      "161798179854db5c80": {
+        "type": "slideshow",
+        "blocks": {
+          "161798179854db5c80-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/tender-juicy-lamb-chops-min_dafa2114-75cb-404e-9bf2-9b961530d094.jpg",
+              "alignment": "center center",
+              "slide_title": "TENDER, JUICY LAMB CHOPS",
+              "subheading": "Locally Raised & Hand Picked for the Freshest Meat Available",
+              "button_label": "EXPLORE LAMB",
+              "button_link": "shopify://collections/australian-lamb-1"
+            }
+          },
+          "19c688c4-c6ae-4e5f-91ba-95e9f22e2172": {
+            "type": "image",
+            "disabled": true,
+            "settings": {
+              "image": "shopify://shop_images/Ramdan-2020-carivore-banner1-min_55ba55dd-1298-4a41-b5c0-550c4eba3868.jpg",
+              "alignment": "center top",
+              "slide_title": "",
+              "subheading": "",
+              "button_label": "SHOP NOW",
+              "button_link": "shopify://collections"
+            }
+          },
+          "a53c346e-239c-4b00-a947-0bc574cecd81": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/Jerkeyslide_1512x-min.jpg",
+              "alignment": "center bottom",
+              "slide_title": "You, Me & a Bag of Jerky!",
+              "subheading": "Available Now in More  Flavors.",
+              "button_label": "ORDER NOW",
+              "button_link": "shopify://collections/jerky-charcuterie"
+            }
+          },
+          "ca402c1a-a309-4737-8697-492b1f54049f": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/Grass-fed-usda-angus-beef-min.jpg",
+              "alignment": "center center",
+              "slide_title": "GRASS-FED, USDA ANGUS BEEF",
+              "subheading": "Deal of the Week!",
+              "button_label": "GET  YOURS",
+              "button_link": "shopify://products/grass-fed-angus-ground-beef-1lb"
+            }
+          },
+          "161798179854db5c80-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/meat-your-passion-min_db011dc5-5a1c-4953-b955-a3b26ee0259d.jpg",
+              "alignment": "center center",
+              "slide_title": "MEAT YOUR PASSION!",
+              "subheading": "Every Good Meal Starts with a Great Cut of Meat",
+              "button_label": "ORDER NOW",
+              "button_link": "shopify://collections"
+            }
+          },
+          "43e2c758-5651-4bb2-af69-92b27b2ce74c": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/IMG_0951.jpg",
+              "alignment": "center center",
+              "slide_title": "HIGH-QUALITY. HAND-PICKED. HUMANELY RAISED.",
+              "subheading": "Certified Zabihah Halal Meats Delivered to Your Doorstep",
+              "button_label": "ORDER NOW",
+              "button_link": "shopify://collections/beef"
+            }
+          },
+          "daa6b388-bc83-4154-bc69-d30f607ac6b0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/hard-to-find-premium-cuts-min_29ad629d-b73d-4550-b739-640076f3c86c.jpg",
+              "alignment": "center center",
+              "slide_title": "HARD-TO-FIND PREMIUM CUTS",
+              "subheading": "From Beef Brisket to Filet Mignon – Premium Cuts for a Western Palate",
+              "button_label": "ORDER NOW",
+              "button_link": "shopify://collections/beef"
+            }
+          },
+          "image_KU6xgC": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/IMG_0668.jpg",
+              "alignment": "left top",
+              "slide_title": "Smoked Items",
+              "subheading": "Mouth Watering Low and Slow BBQ",
+              "button_label": "",
+              "button_link": "shopify://collections/jerky-charcuterie"
+            }
+          }
+        },
+        "block_order": [
+          "161798179854db5c80-0",
+          "19c688c4-c6ae-4e5f-91ba-95e9f22e2172",
+          "a53c346e-239c-4b00-a947-0bc574cecd81",
+          "ca402c1a-a309-4737-8697-492b1f54049f",
+          "161798179854db5c80-1",
+          "43e2c758-5651-4bb2-af69-92b27b2ce74c",
+          "daa6b388-bc83-4154-bc69-d30f607ac6b0",
+          "image_KU6xgC"
+        ],
+        "settings": {
+          "slideshow_height": "large",
+          "text_size": "large",
+          "text_alignment": "center center",
+          "show_overlay": true,
+          "autorotate": true,
+          "autorotate_speed": 5
+        }
+      },
+      "quiz": {
+        "type": "quiz",
+        "blocks": {
+          "7f611fa1-de62-4f57-9197-99882d2b18e0": {
+            "type": "FAQHeading",
+            "settings": {
+              "faqHeading": "Quiz"
+            }
+          },
+          "2f55dd9d-e322-40af-b909-dd4eaa331484": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step1_Would_You_Consider_yourself_a_pit_master_or_a_beginner-min.jpg",
+              "faqQuestion": "Would You Consider yourself a pit master or a beginner",
+              "faqAnswer1": "I don't know my way around the kitchen",
+              "faqAnswer2": "I cook the basics",
+              "faqAnswer3": "I'm neither a begineer nor",
+              "faqAnswer4": "I can follow a recipe very closely",
+              "faqAnswer5": "I'm a Pit Master, I can roast a whole lamb"
+            }
+          },
+          "0bdc517e-0710-460e-81a2-a7aa1a7be19e": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step2_What_s_your_preferred_cooking_method___busy_lifestyle-min.jpg",
+              "faqQuestion": "What's your preferred cooking method / busy lifestyle",
+              "faqAnswer1": "Roast / Slow Cooker [Set it and forget it]",
+              "faqAnswer2": "Sous Vide requires a souvide machine set time and temp",
+              "faqAnswer3": "Stove top / Frying pan [more involved with ingredients ]",
+              "faqAnswer4": "Grill [need to know what you're doing ]",
+              "faqAnswer5": "Smoke [ Special cuts, equipment and cooking times ]"
+            }
+          },
+          "0e59ebc7-cf54-4cef-815e-300923bcbfea": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step3_How_do_you_describe_your_Carnivore_consumption-min.jpg",
+              "faqQuestion": "How do you describe your Carnivore consumption",
+              "faqAnswer1": "I eat meat less than twice a week",
+              "faqAnswer2": "Three to five times a week",
+              "faqAnswer3": "At least once a day",
+              "faqAnswer4": "Multiple meals a day",
+              "faqAnswer5": "Most of my meals contain meat of some sort"
+            }
+          },
+          "28494714-2a09-4b3b-8f08-26993a24a003": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step4_How_Many_servings_do_you_cook_at_a_time-min.jpg",
+              "faqQuestion": "How Many servings do you cook at a time",
+              "faqAnswer1": "I cook less than 2 servings at a time",
+              "faqAnswer2": "I cook 3 -4  servings at a time",
+              "faqAnswer3": "I cook 4 -6  servings at a time",
+              "faqAnswer4": "I cook for the whole week for a family < 5",
+              "faqAnswer5": "We have a feast every day"
+            }
+          },
+          "c0aaaae8-1454-4cb7-8f5d-0318cd752c98": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step5_What_is_your_animal_protien_of_choice-min.jpg",
+              "faqQuestion": "What is your animal protien of choice",
+              "faqAnswer1": "Poultry - Chicken / Turkey",
+              "faqAnswer2": "Beef , Steaks/ Ground/ Roast",
+              "faqAnswer3": "Lamb and Goat",
+              "faqAnswer4": "Game meat (Duck / Squab / Venesion )",
+              "faqAnswer5": "All of the Above"
+            }
+          },
+          "f6e683c4-7f4b-4bef-8e96-ed6d32530d85": {
+            "type": "faqQandA",
+            "settings": {
+              "qimage": "shopify://shop_images/Step6_What_catches_your_attention_in_a_restaurant_menu-min.jpg",
+              "faqQuestion": "What catches your attention in a restaurant menu",
+              "faqAnswer1": "Burgers and Sandwitches",
+              "faqAnswer2": "Lamb Chops baby",
+              "faqAnswer3": "Rotisserie Chicken",
+              "faqAnswer4": "Mixed Grill all the way",
+              "faqAnswer5": "I'm a Beef Steaks Person"
+            }
+          }
+        },
+        "block_order": [
+          "7f611fa1-de62-4f57-9197-99882d2b18e0",
+          "2f55dd9d-e322-40af-b909-dd4eaa331484",
+          "0bdc517e-0710-460e-81a2-a7aa1a7be19e",
+          "0e59ebc7-cf54-4cef-815e-300923bcbfea",
+          "28494714-2a09-4b3b-8f08-26993a24a003",
+          "c0aaaae8-1454-4cb7-8f5d-0318cd752c98",
+          "f6e683c4-7f4b-4bef-8e96-ed6d32530d85"
+        ],
+        "settings": {}
+      },
+      "collection-template": {
+        "type": "collection-template",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/FreshMeat_4_3_ratio.jpg",
+          "tags_enable": false
+        }
+      },
+      "list-collections-template": {
+        "type": "list-collections-template",
+        "blocks": {
+          "a9125081-f801-4527-9023-85163be394b2": {
+            "type": "collection",
+            "settings": {
+              "collection": "beef"
+            }
+          },
+          "e1cbcd17-c617-4e97-92d5-b568fddf9e8f": {
+            "type": "collection",
+            "settings": {
+              "collection": "poultry"
+            }
+          },
+          "7fd1edc8-63a0-4e6c-bead-74880c3d05ba": {
+            "type": "collection",
+            "settings": {
+              "collection": "australian-lamb-1"
+            }
+          },
+          "4d13f6d6-097f-4489-a809-3bc0f647eb5a": {
+            "type": "collection",
+            "disabled": true,
+            "settings": {
+              "collection": "goat"
+            }
+          },
+          "40a1a9c1-c52d-4d16-9dd9-7ac19fe231e5": {
+            "type": "collection",
+            "settings": {
+              "collection": "jerky-charcuterie"
+            }
+          },
+          "5d7a435c-e7b8-41c3-87bf-3dc5c867ca6d": {
+            "type": "collection",
+            "disabled": true,
+            "settings": {
+              "collection": "merchandise"
+            }
+          }
+        },
+        "block_order": [
+          "a9125081-f801-4527-9023-85163be394b2",
+          "e1cbcd17-c617-4e97-92d5-b568fddf9e8f",
+          "7fd1edc8-63a0-4e6c-bead-74880c3d05ba",
+          "4d13f6d6-097f-4489-a809-3bc0f647eb5a",
+          "40a1a9c1-c52d-4d16-9dd9-7ac19fe231e5",
+          "5d7a435c-e7b8-41c3-87bf-3dc5c867ca6d"
+        ],
+        "settings": {
+          "display_type": "selected",
+          "sort": "products_high",
+          "grid": 2,
+          "collectiontitle": "Our Selection",
+          "collectioncontent": "With Carnivore House, your family gets to enjoy delicious, fresh, humanely raised and finished meat – in the cuts and styles you’ve grown to love – completely free of questionable ingredients and improper processing. The right animals, harvested at the peak of flavor, and the right ingredients, every time."
+        }
+      },
+      "register-title": {
+        "type": "register-title",
+        "settings": {
+          "title": "Join Our Loyalty Program",
+          "content": ""
+        }
+      },
+      "events": {
+        "type": "events",
+        "settings": {
+          "page_title": "We Are certified by SHARIAA Board HMS",
+          "banner_image": "shopify://shop_images/a-woman-in-red-walks-through-arched-hall.jpg",
+          "sec1_title": "",
+          "right_text": "",
+          "button1": "shopify://collections",
+          "sec2_title": "",
+          "sec2right_text": "",
+          "button": "shopify://collections/jerky-charcuterie",
+          "collection_text": ""
+        }
+      },
+      "1640934051f977bb72": {
+        "type": "collection",
+        "settings": {
+          "title": "Featured collection",
+          "collection": "beef",
+          "grid": 5,
+          "rows": 2,
+          "show_vendor": false,
+          "show_view_all": true
+        }
+      },
+      "16409373543c44370d": {
+        "type": "featured-product",
+        "settings": {
+          "featured_product": "halal-grass-fed-angus-beef-brisket-burgers-4-patties-1-2-lbs",
+          "show_quantity_selector": true,
+          "show_vendor": false,
+          "enable_payment_button": true,
+          "show_share_buttons": false,
+          "media_size": "medium",
+          "enable_image_zoom": true,
+          "enable_video_looping": true
+        }
+      },
+      "16409373647d02b4af": {
+        "type": "featured-blog",
+        "disabled": true,
+        "settings": {
+          "title": "Blog posts",
+          "blog": "news",
+          "post_limit": 3,
+          "blog_show_author": false,
+          "blog_show_date": true,
+          "show_view_all": false
+        }
+      },
+      "custom-collection": {
+        "type": "custom-collection",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/Products-beef-banner_106a209a-49e1-44ba-a0e1-d3d4f45e4da0.jpg",
+          "tags_enable": true
+        }
+      },
+      "poultry-collection": {
+        "type": "poultry-collection",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/Products-ploutry-banner.jpg",
+          "tags_enable": true
+        }
+      },
+      "jerky": {
+        "type": "jerky",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/Products-jerkyCHARCUTERIE-banner.jpg",
+          "tags_enable": true
+        }
+      },
+      "lamb": {
+        "type": "lamb",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/Products-lamb-banner_26b71805-d141-4027-9060-ab24821bf02c.jpg",
+          "tags_enable": true
+        }
+      },
+      "goat": {
+        "type": "goat",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/Products-goat-banner.jpg",
+          "tags_enable": true
+        }
+      },
+      "merchandise": {
+        "type": "merchandise",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": true,
+          "show_vendor": false,
+          "sort_enable": true,
+          "qimage": "shopify://shop_images/T-Shirt-merchandise-banner_3daa2d66-26c8-41c8-8b4d-7f41f4b7df3e.jpg",
+          "tags_enable": true
+        }
+      },
+      "1662258067c0e98421": {
+        "type": "judgeme_carousel_section",
+        "settings": {
+          "maxwidth": 1920
+        }
+      },
+      "product-template": {
+        "type": "product-template",
+        "settings": {
+          "show_quantity_selector": false,
+          "show_vendor": false,
+          "enable_payment_button": true,
+          "show_share_buttons": true,
+          "media_size": "medium",
+          "enable_image_zoom": true,
+          "enable_video_looping": false
+        }
+      },
+      "product-recommendations": {
+        "type": "product-recommendations",
+        "settings": {
+          "show_product_recommendations": true,
+          "heading": "You may also like",
+          "show_vendor": false
+        }
+      }
+    },
+    "content_for_index": [
+      "1608999069e6f0c001",
+      "161798179854db5c80",
+      "hero-1",
+      "1640934051f977bb72",
+      "1662258067c0e98421",
+      "feature-columns",
+      "1608999044c6d7b253",
+      "161331985362e98c78",
+      "feature-row",
+      "1608999854df4e50ba",
+      "image-bar",
+      "16409373543c44370d",
+      "16409373647d02b4af"
+    ],
+    "blocks": {
+      "10436698916776057164": {
+        "type": "shopify://apps/appstle-subscriptions/blocks/appstle-subscription-helper/fe257d39-6f88-4f35-ab08-bd437e3aa94e",
+        "disabled": false,
+        "settings": {}
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-product-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "button_color": "#202a36",
+          "secondary_color": "#FFFFFF",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_left",
+          "button_vertical_position": "lowest",
+          "greeting_message": ""
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {
+      "sections": {
+        "header": {
+          "type": "header",
+          "settings": {}
+        },
+        "hero-1": {
+          "type": "hero",
+          "settings": {
+            "hero_size": "large",
+            "text_size": "large"
+          }
+        },
+        "feature-row": {
+          "type": "feature-row",
+          "settings": {}
+        },
+        "feature-columns": {
+          "type": "feature-columns",
+          "blocks": {
+            "feature-columns-0": {
+              "type": "text_block",
+              "settings": {}
+            },
+            "feature-columns-1": {
+              "type": "text_block",
+              "settings": {}
+            },
+            "feature-columns-2": {
+              "type": "text_block",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "feature-columns-0",
+            "feature-columns-1",
+            "feature-columns-2"
+          ],
+          "settings": {
+            "title": ""
+          }
+        },
+        "collection": {
+          "type": "collection",
+          "settings": {
+            "grid": 4
+          }
+        },
+        "hero-2": {
+          "type": "hero",
+          "settings": {
+            "text_size": "large"
+          }
+        },
+        "quotes": {
+          "type": "quotes",
+          "blocks": {
+            "quotes-0": {
+              "type": "quote",
+              "settings": {}
+            },
+            "quotes-1": {
+              "type": "quote",
+              "settings": {}
+            },
+            "quotes-2": {
+              "type": "quote",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "quotes-0",
+            "quotes-1",
+            "quotes-2"
+          ],
+          "settings": {
+            "title": ""
+          }
+        },
+        "image-bar": {
+          "type": "image-bar",
+          "blocks": {
+            "image-bar-0": {
+              "type": "image",
+              "settings": {}
+            },
+            "image-bar-1": {
+              "type": "image",
+              "settings": {}
+            },
+            "image-bar-2": {
+              "type": "image",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "image-bar-0",
+            "image-bar-1",
+            "image-bar-2"
+          ],
+          "settings": {}
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "footer-0": {
+              "type": "link_list",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "footer-0"
+          ],
+          "settings": {
+            "show_payment_icons": true
+          }
+        }
+      },
+      "content_for_index": [
+        "hero-1",
+        "feature-row",
+        "feature-columns",
+        "collection",
+        "hero-2",
+        "quotes",
+        "image-bar"
+      ]
+    }
+  }
+}

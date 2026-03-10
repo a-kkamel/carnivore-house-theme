@@ -1,0 +1,297 @@
+{%- assign social_icons = false -%}
+{%- assign inline_list = false -%}
+{%- assign locale_selector = false -%}
+{%- assign currency_selector = false -%}
+{%- assign show_payment_icons = false -%}
+{%- assign show_selectors = false -%}
+
+{%- if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 -%}
+    {%- assign currency_selector = true -%}
+{%- endif -%}
+
+{%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
+    {%- assign locale_selector = true -%}
+{%- endif -%}
+
+{%- if section.settings.show_payment_icons -%}
+    {%- unless shop.enabled_payment_types == empty -%}
+        {%- assign show_payment_icons = true -%}
+    {%- endunless -%}
+{%- endif -%}
+
+{%- if currency_selector or locale_selector -%}
+    {%- assign show_selectors = true -%}
+{%- endif -%}
+
+{%- if
+        settings.social_twitter_link != blank
+        or settings.social_facebook_link != blank
+        or settings.social_pinterest_link != blank
+        or settings.social_instagram_link != blank
+        or settings.social_tumblr_link != blank
+        or settings.social_snapchat_link != blank
+        or settings.social_youtube_link != blank
+        or settings.social_vimeo_link != blank
+        or request.page_type == 'article'
+        or request.page_type == 'blog'
+-%}
+    {%- assign social_icons = true -%}
+{%- endif -%}
+
+{%- assign payment_width_class = "one-half" -%}
+{%- if show_selectors -%}
+    {%- unless social_icons -%}
+        {%- assign payment_width_class = "" -%}
+    {%- endunless -%}
+{%- endif -%}
+
+{%- assign copyright_show_class = "medium-up--hide" -%}
+{%- if social_icons -%}
+    {%- unless show_selectors -%}
+        {%- assign copyright_show_class = "" -%}
+    {%- endunless -%}
+{%- endif -%}
+
+{%- case section.blocks.size -%}
+    {%- when 1 -%}
+        {%- assign footer_item = 'site-footer__item--full-width' -%}
+        {%- assign inline_list = true -%}
+    {%- when 2 -%}
+        {%- assign footer_item = 'site-footer__item--one-half' -%}
+        {%- assign inline_list = true -%}
+    {%- when 3 -%}
+        {%- assign footer_item = 'site-footer__item--one-third' -%}
+        {%- for block in section.blocks -%}
+            {%- if block.type == 'newsletter' -%}
+                {%- assign footer_item = 'site-footer__item--one-quarter' -%}
+                {%- break -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- when 4 -%}
+        {%- assign footer_item = 'site-footer__item--one-quarter' -%}
+    {%- when 5 -%}
+        {%- assign footer_item = 'site-footer__item--one-fifth' -%}
+{%- endcase -%}
+
+{% comment %} Create an appropriate hover color based on text color and brightness {% endcomment %}
+{%- assign footer_text_color = section.settings.color_footer_text -%}
+{%- assign footer_text_color_brightness = section.settings.color_footer_text | color_brightness -%}
+{%- if footer_text_color_brightness <= 26 -%}
+    {%- assign footer_text_color_hover = footer_text_color | color_lighten: 25 -%}
+{%- elsif footer_text_color_brightness <= 65 -%}
+    {%- assign footer_text_color_hover = footer_text_color | color_lighten: 15 -%}
+{%- else -%}
+    {%- assign footer_text_color_hover = footer_text_color | color_darken: 10 -%}
+{%- endif -%}
+
+<style>
+    .site-footer__hr {
+        border-bottom: 1px solid{{ section.settings.color_footer_bg | color_darken: 10 }};
+    }
+
+    .site-footer p,
+    .site-footer__linklist-item a,
+    .site-footer__rte a,
+    .site-footer h4,
+    .site-footer small,
+    .site-footer__copyright-content a,
+    .site-footer__newsletter-error,
+    .site-footer__social-icons .social-icons__link {
+        color: {{ section.settings.color_footer_text }};
+    }
+
+    .site-footer {
+        color: {{ section.settings.color_footer_text }};
+        background-color: {{ section.settings.color_footer_bg }};
+    }
+
+    .site-footer__rte a {
+        border-bottom: 1px solid{{ section.settings.color_footer_text }};
+    }
+
+    .site-footer__rte a:hover,
+    .site-footer__linklist-item a:hover,
+    .site-footer__copyright-content a:hover {
+        color: {{ footer_text_color_hover }};
+        border-bottom: 1px solid{{ footer_text_color_hover }};
+    }
+
+    .site-footer__social-icons .social-icons__link:hover {
+        color: {{ footer_text_color_hover }};
+    }
+
+    .site-footer {
+        background-image: url("{{ 'footer-background.jpg' | asset_img_url: 'master' }}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .site-footer .one-half img{
+        height: 100px !important;
+    }
+
+</style>
+
+
+{%- capture payment_icon_markup -%}
+    {%- if show_payment_icons -%}
+        <div class="grid__item site-footer__payment-icons">
+            <span class="visually-hidden">{{ 'general.payment.method' | t }}</span>
+            <ul class="payment-icons list--inline site-footer__icon-list">
+                {%- for type in shop.enabled_payment_types -%}
+                    <li class="payment-icon">
+                        {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                    </li>
+                {%- endfor -%}
+            </ul>
+        </div>
+    {%- endif -%}
+{%- endcapture -%}
+
+
+<footer class="site-footer critical-hidden" role="contentinfo" data-section-id="{{ section.id }}"
+        data-section-type="footer-section">
+
+    <div class="page-width">
+        <div class="small-one-half fsection">
+            <div class="grid__item one-half small--one-whole">
+                <img src="{{ 'logo-white.png' | asset_img_url: 'master' }}" alt="Logo"/>
+            </div>
+        </div>
+      <div class="small-one-half fsection">
+            <div class="grid__item one-half small--one-whole fmenu">
+              {% for link in linklists.footer.links %}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {% endfor %}
+                
+            </div>
+        </div>
+        <div class="small-one-half fsection">
+          <div class="grid__item one-half small--one-whole socialarea">
+              <a href="{{section.settings.facebook}}" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+               <a href="{{section.settings.instagram}}" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+              <a class="tiktok" href="{{section.settings.tiktok}}" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="tiktok" class="svg-inline--fa fa-tiktok fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg></a>
+<!--               <a href="{{section.settings.youtube}}"><i class="fa fa-youtube" aria-hidden="true"></i></a> -->
+              <a href="https://wa.me/{{section.settings.whatsapp}}" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+<!--             <img src="{{ 'footer-icons.png' | asset_img_url: 'master' }}" alt="Icons"/> -->
+            </div>
+           <div class="grid__item one-half small--one-whole paymentarea">
+            {% for block in section.blocks %}
+            <img src="{{ block.settings.payicons | img_url: 'large' }}" alt="Icons"/>
+             {% endfor %}
+            </div>
+          
+            
+        </div>
+    </div>
+</footer>
+<script>
+$(window).scroll(function() {
+  if ($(this).scrollTop() > 0) {
+    $('.mainheadss').hide();
+    $('.sketch').show();
+  } else {
+    $('.sketch').hide();
+    $('.mainheadss').show();
+  }
+});
+$(".site-nav__link").click(function(){
+    $(this).next().toggle();
+})
+
+if ($(window).width() < 767) {
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 0) {
+     $('.mainheadss').addClass("fixmobilenav");
+     }
+    else{
+      $('.mainheadss').removeClass("fixmobilenav");
+    }
+});  
+}
+
+
+</script>
+
+{% schema %}
+{
+"name": {
+
+"en": "Footer",
+
+"it": "Footer"
+
+},
+"max_blocks": 8,
+
+"blocks": [
+{
+"type": "link_list",
+"name": {
+"cs": "Nabídka",
+"da": "Menu",
+"de": "Menü",
+"en": "Payment Icons",
+"es": "Menú",
+"fi": "Valikko",
+"fr": "Menu",
+"it": "Menu",
+"ja": "メニュー",
+"ko": "메뉴",
+"nb": "Meny",
+"nl": "Menu",
+"pl": "Menu",
+"pt-BR": "Menu",
+"pt-PT": "Menu",
+"sv": "Meny",
+"th": "เมนู",
+"tr": "Menü",
+"vi": "Menu",
+"zh-CN": "菜单",
+"zh-TW": "選單"
+},
+"settings": [
+{
+ "id": "payicons",
+  "type": "image_picker",
+  "label": "Select icon"
+  }
+]
+}
+]
+    ,
+"settings": [
+    {
+    "id": "facebook",
+    "type": "text",
+    "label": "Enter facebook Url"
+    }
+  	,
+    {
+        "id": "instagram",
+        "type": "text",
+        "label": "Enter instagram Url"
+        }
+  ,
+    {
+        "id": "tiktok",
+        "type": "text",
+        "label": "Enter tiktok Url"
+        }
+  ,
+    {
+        "id": "youtube",
+        "type": "text",
+        "label": "Enter youtube Url"
+        }
+  ,
+    {
+  "id": "whatsapp",
+  "type": "text",
+  "label": "Enter whatsapp Url"
+  }
+ 
+     
+]
+}
+{% endschema %}

@@ -1,0 +1,617 @@
+{% assign b2b_collection = collections['wholesale'] %}
+{% assign b2b_products = b2b_collection.products %}
+
+<section class="b2b-catalog" id="b2b-catalog">
+  <div class="b2b-catalog__container">
+
+    <div class="b2b-catalog__header">
+      <span class="b2b-catalog__label">Wholesale Catalog</span>
+      <h2 class="b2b-catalog__title">Trade Price List</h2>
+      <p class="b2b-catalog__desc">All prices reflect your approved wholesale rate.</p>
+    </div>
+
+    {% if b2b_products.size > 0 %}
+    <div class="b2b-grid">
+      {% for product in b2b_products limit: 12 %}
+        {% assign variant = product.selected_or_first_available_variant %}
+        <div class="b2b-card">
+          <div class="b2b-card__img-wrap">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                class="b2b-card__img"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {% else %}
+              <div class="b2b-card__img-placeholder"><span>No Image</span></div>
+            {% endif %}
+            {% if product.available %}
+              <span class="b2b-card__badge b2b-card__badge--available">In Stock</span>
+            {% else %}
+              <span class="b2b-card__badge b2b-card__badge--oos">Out of Stock</span>
+            {% endif %}
+          </div>
+
+          <div class="b2b-card__body">
+            <p class="b2b-card__vendor">{{ product.vendor }}</p>
+            <h3 class="b2b-card__name">{{ product.title }}</h3>
+            <p class="b2b-card__desc">{{ product.description | strip_html | truncate: 90 }}</p>
+
+            <div class="b2b-card__pricing">
+              <div class="b2b-card__price-block">
+                <span class="b2b-card__price-label">Wholesale</span>
+                <span class="b2b-card__price">{{ variant.price | money }}</span>
+              </div>
+              {% if variant.compare_at_price > variant.price %}
+              <div class="b2b-card__price-block">
+                <span class="b2b-card__price-label">Retail</span>
+                <span class="b2b-card__price b2b-card__price--retail">{{ variant.compare_at_price | money }}</span>
+              </div>
+              {% endif %}
+            </div>
+
+            {% if variant.compare_at_price > variant.price %}
+            <div class="b2b-card__savings">
+              You save {{ variant.compare_at_price | minus: variant.price | money }}
+              ({{ variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round }}%)
+            </div>
+            {% endif %}
+
+            {% if product.variants.size > 1 %}
+            <select class="b2b-card__variant-select">
+              {% for v in product.variants %}
+                <option value="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
+                  {{ v.title }}{% unless v.available %} — Sold Out{% endunless %}
+                </option>
+              {% endfor %}
+            </select>
+            {% endif %}
+
+            <div class="b2b-card__add-row">
+              <div class="b2b-card__qty-wrap">
+                <button class="b2b-card__qty-btn" type="button" onclick="adjQty(this,-1)">−</button>
+                <input type="number" class="b2b-card__qty" value="1" min="1" max="999">
+                <button class="b2b-card__qty-btn" type="button" onclick="adjQty(this,1)">+</button>
+              </div>
+              <button
+                class="b2b-card__add-btn"
+                type="button"
+                data-variant="{{ variant.id }}"
+                {% unless product.available %}disabled{% endunless %}
+              >
+                {% if product.available %}Add to Order{% else %}Out of Stock{% endif %}
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p class="b2b-catalog__empty">No products found. Make sure you have a collection named <strong>wholesale</strong>.</p>
+    {% endif %}
+
+  </div>
+</section>
+
+<section class="b2b-bulk" id="b2b-bulk-order">
+  <div class="b2b-bulk__container">
+
+    <div class="b2b-bulk__header">
+      <span class="b2b-catalog__label">Fast Order</span>
+      <h2 class="b2b-catalog__title">Bulk Order Form</h2>
+      <p class="b2b-catalog__desc">Know what you need? Add multiple SKUs at once.</p>
+    </div>
+
+    <div class="b2b-bulk__form-wrap">
+      <div class="b2b-bulk__table-header">
+        <span>Product</span>
+        <span>Variant</span>
+        <span>Qty</span>
+        <span></span>
+      </div>
+
+      <div id="bulk-rows"></div>
+
+      <button class="b2b-bulk__add-row" type="button" id="bulk-add-row">+ Add Another Item</button>
+
+      <div class="b2b-bulk__footer">
+        <div class="b2b-bulk__note-wrap">
+          <label for="bulk-note">Order Notes</label>
+          <textarea id="bulk-note" class="b2b-bulk__note" placeholder="Special instructions, delivery window, cut specs..."></textarea>
+        </div>
+        <button class="b2b-bulk__submit" type="button" id="bulk-submit">Add All to Cart</button>
+      </div>
+
+      <div class="b2b-bulk__feedback" id="bulk-feedback"></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="b2b-toast" id="b2b-toast">
+  <span id="b2b-toast-msg">Items added to cart</span>
+  <a href="{{ routes.cart_url }}" class="b2b-toast__link">View Cart →</a>
+</div>
+
+<style>
+.b2b-catalog,
+.b2b-bulk {
+  background: #0a0806;
+  color: #f5f0e8;
+  font-family: 'Georgia', serif;
+  padding: 6rem 0;
+}
+.b2b-bulk { background: #0d0b08; border-top: 1px solid #1e1a14; }
+.b2b-catalog__container,
+.b2b-bulk__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+.b2b-catalog__header,
+.b2b-bulk__header { text-align: center; margin-bottom: 4rem; }
+.b2b-catalog__label {
+  display: inline-block;
+  color: #c9a96e;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-family: sans-serif;
+}
+.b2b-catalog__title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  color: #f5f0e8;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.02em;
+}
+.b2b-catalog__desc {
+  color: #6b6055;
+  font-size: 0.95rem;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-family: sans-serif;
+}
+.b2b-catalog__empty {
+  text-align: center;
+  color: #6b6055;
+  font-family: sans-serif;
+  padding: 4rem;
+}
+.b2b-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+}
+.b2b-card {
+  background: #110f0b;
+  border: 1px solid #1e1a14;
+  transition: border-color 0.3s;
+}
+.b2b-card:hover { border-color: #3a3020; }
+.b2b-card__img-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #1a1610;
+}
+.b2b-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  filter: saturate(0.85);
+}
+.b2b-card:hover .b2b-card__img { transform: scale(1.04); }
+.b2b-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3a3020;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+}
+.b2b-card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  font-family: sans-serif;
+  font-weight: 600;
+}
+.b2b-card__badge--available { background: #1a3020; color: #4ec97a; }
+.b2b-card__badge--oos { background: #2a1a14; color: #c97a4e; }
+.b2b-card__body { padding: 1.5rem; }
+.b2b-card__vendor {
+  font-size: 0.65rem;
+  color: #c9a96e;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.3rem;
+  font-family: sans-serif;
+}
+.b2b-card__name {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #f5f0e8;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+.b2b-card__desc {
+  font-size: 0.82rem;
+  color: #6b6055;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  font-family: sans-serif;
+}
+.b2b-card__pricing {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+.b2b-card__price-block { display: flex; flex-direction: column; gap: 0.15rem; }
+.b2b-card__price-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #4a4035;
+  font-family: sans-serif;
+}
+.b2b-card__price { font-size: 1.4rem; color: #c9a96e; }
+.b2b-card__price--retail {
+  font-size: 1rem;
+  color: #4a4035;
+  text-decoration: line-through;
+}
+.b2b-card__savings {
+  font-size: 0.72rem;
+  color: #4ec97a;
+  font-family: sans-serif;
+  margin-bottom: 1rem;
+}
+.b2b-card__variant-select {
+  width: 100%;
+  background: #1a1610;
+  border: 1px solid #2a2218;
+  color: #c9a96e;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.82rem;
+  font-family: sans-serif;
+  margin-bottom: 1rem;
+  appearance: none;
+  cursor: pointer;
+}
+.b2b-card__add-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.b2b-card__qty-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid #2a2218;
+}
+.b2b-card__qty-btn {
+  background: #1a1610;
+  border: none;
+  color: #c9a96e;
+  width: 32px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.b2b-card__qty {
+  width: 44px;
+  height: 36px;
+  background: #110f0b;
+  border: none;
+  border-left: 1px solid #2a2218;
+  border-right: 1px solid #2a2218;
+  color: #f5f0e8;
+  text-align: center;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+}
+.b2b-card__add-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #c9a96e;
+  color: #c9a96e;
+  padding: 0.5rem 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.b2b-card__add-btn:hover:not(:disabled) { background: #c9a96e; color: #0a0806; }
+.b2b-card__add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.b2b-bulk__form-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #110f0b;
+  border: 1px solid #1e1a14;
+  padding: 2rem;
+}
+.b2b-bulk__table-header {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 80px 40px;
+  gap: 1rem;
+  padding: 0.5rem 0 1rem;
+  border-bottom: 1px solid #1e1a14;
+  font-size: 0.65rem;
+  color: #4a4035;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-family: sans-serif;
+  margin-bottom: 1rem;
+}
+.b2b-bulk__row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 80px 40px;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.b2b-bulk__row select,
+.b2b-bulk__row input[type="number"] {
+  background: #1a1610;
+  border: 1px solid #2a2218;
+  color: #f5f0e8;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  font-family: sans-serif;
+  width: 100%;
+}
+.b2b-bulk__row input[type="number"] { text-align: center; }
+.b2b-bulk__remove {
+  background: none;
+  border: none;
+  color: #4a4035;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.b2b-bulk__remove:hover { color: #c97a4e; }
+.b2b-bulk__add-row {
+  background: none;
+  border: 1px dashed #2a2218;
+  color: #6b6055;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  margin: 1rem 0;
+  transition: border-color 0.2s, color 0.2s;
+  letter-spacing: 0.05em;
+}
+.b2b-bulk__add-row:hover { border-color: #c9a96e; color: #c9a96e; }
+.b2b-bulk__footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: end;
+  margin-top: 1.5rem;
+  border-top: 1px solid #1e1a14;
+  padding-top: 1.5rem;
+}
+.b2b-bulk__note-wrap label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #4a4035;
+  font-family: sans-serif;
+  margin-bottom: 0.5rem;
+}
+.b2b-bulk__note {
+  width: 100%;
+  height: 80px;
+  background: #1a1610;
+  border: 1px solid #2a2218;
+  color: #f5f0e8;
+  padding: 0.75rem;
+  font-family: sans-serif;
+  font-size: 0.82rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.b2b-bulk__submit {
+  background: #c9a96e;
+  border: none;
+  color: #0a0806;
+  padding: 1rem 2.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.b2b-bulk__submit:hover { background: #e0c080; }
+.b2b-bulk__feedback { margin-top: 1rem; font-family: sans-serif; font-size: 0.82rem; min-height: 1.5rem; }
+.b2b-bulk__feedback.success { color: #4ec97a; }
+.b2b-bulk__feedback.error { color: #c97a4e; }
+.b2b-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #1e1a14;
+  border: 1px solid #c9a96e;
+  color: #f5f0e8;
+  padding: 1rem 1.5rem;
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  z-index: 9999;
+  transform: translateY(120%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+.b2b-toast.show { transform: translateY(0); }
+.b2b-toast__link { color: #c9a96e; text-decoration: none; font-weight: 600; }
+@media (max-width: 768px) {
+  .b2b-catalog__container,
+  .b2b-bulk__container { padding: 0 1.5rem; }
+  .b2b-bulk__table-header { display: none; }
+  .b2b-bulk__row { grid-template-columns: 1fr 1fr; }
+  .b2b-bulk__footer { grid-template-columns: 1fr; }
+  .b2b-bulk__submit { width: 100%; }
+}
+</style>
+
+<script>
+(function() {
+
+  window.adjQty = function(btn, delta) {
+    var input = btn.parentElement.querySelector('.b2b-card__qty');
+    input.value = Math.max(1, parseInt(input.value || 1) + delta);
+  };
+
+  document.querySelectorAll('.b2b-card__add-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var card    = btn.closest('.b2b-card');
+      var select  = card.querySelector('.b2b-card__variant-select');
+      var qty     = parseInt(card.querySelector('.b2b-card__qty').value) || 1;
+      var id      = select ? parseInt(select.value) : parseInt(btn.dataset.variant);
+      if (!id) return;
+      btn.textContent = 'Adding…';
+      btn.disabled = true;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: qty })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.id) {
+          showToast(data.product_title + ' added');
+          btn.textContent = '✓ Added';
+          setTimeout(function() { btn.textContent = 'Add to Order'; btn.disabled = false; }, 2000);
+        } else {
+          btn.textContent = 'Error — Retry';
+          btn.disabled = false;
+        }
+      })
+      .catch(function() { btn.textContent = 'Error — Retry'; btn.disabled = false; });
+    });
+  });
+
+  var allProducts = [
+    {% for product in b2b_products limit: 12 %}
+    {
+      title: {{ product.title | json }},
+      variants: [{% for v in product.variants %}{ id: {{ v.id }}, title: {{ v.title | json }}, available: {{ v.available }} }{% unless forloop.last %},{% endunless %}{% endfor %}]
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  var bulkRows  = document.getElementById('bulk-rows');
+  var addRowBtn = document.getElementById('bulk-add-row');
+  var submitBtn = document.getElementById('bulk-submit');
+  var feedback  = document.getElementById('bulk-feedback');
+
+  function buildVariantOptions(idx) {
+    if (idx === '' || !allProducts[idx]) return '<option value="">— Select variant —</option>';
+    return allProducts[idx].variants.map(function(v) {
+      return '<option value="' + v.id + '"' + (!v.available ? ' disabled' : '') + '>' + v.title + (!v.available ? ' (OOS)' : '') + '</option>';
+    }).join('');
+  }
+
+  function addRow() {
+    var row = document.createElement('div');
+    row.className = 'b2b-bulk__row';
+    var productOpts = allProducts.map(function(p, i) {
+      return '<option value="' + i + '">' + p.title + '</option>';
+    }).join('');
+    row.innerHTML =
+      '<select class="bulk-product-sel"><option value="">— Select product —</option>' + productOpts + '</select>' +
+      '<select class="bulk-variant-sel"><option value="">— Select variant —</option></select>' +
+      '<input type="number" class="bulk-qty" value="1" min="1" max="999">' +
+      '<button class="b2b-bulk__remove" type="button">×</button>';
+    row.querySelector('.bulk-product-sel').addEventListener('change', function() {
+      row.querySelector('.bulk-variant-sel').innerHTML = buildVariantOptions(this.value);
+    });
+    row.querySelector('.b2b-bulk__remove').addEventListener('click', function() { row.remove(); });
+    bulkRows.appendChild(row);
+  }
+
+  addRowBtn.addEventListener('click', addRow);
+  addRow();
+
+  submitBtn.addEventListener('click', function() {
+    var items = [];
+    document.querySelectorAll('.b2b-bulk__row').forEach(function(row) {
+      var varId = row.querySelector('.bulk-variant-sel').value;
+      var qty   = parseInt(row.querySelector('.bulk-qty').value) || 1;
+      if (varId) items.push({ id: parseInt(varId), quantity: qty });
+    });
+    if (!items.length) {
+      feedback.textContent = 'Please select at least one product.';
+      feedback.className = 'b2b-bulk__feedback error';
+      return;
+    }
+    submitBtn.textContent = 'Adding…';
+    submitBtn.disabled = true;
+    feedback.textContent = '';
+    feedback.className = 'b2b-bulk__feedback';
+    var chain = Promise.resolve();
+    items.forEach(function(item) {
+      chain = chain.then(function() {
+        return fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item)
+        }).then(function(r) { return r.json(); });
+      });
+    });
+    var note = document.getElementById('bulk-note').value;
+    if (note) {
+      chain = chain.then(function() {
+        return fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ note: note })
+        });
+      });
+    }
+    chain.then(function() {
+      feedback.textContent = '✓ ' + items.length + ' item(s) added to your cart.';
+      feedback.className = 'b2b-bulk__feedback success';
+      showToast(items.length + ' item(s) added to cart');
+      submitBtn.textContent = 'Add All to Cart';
+      submitBtn.disabled = false;
+    }).catch(function() {
+      feedback.textContent = 'Something went wrong. Please try again.';
+      feedback.className = 'b2b-bulk__feedback error';
+      submitBtn.textContent = 'Add All to Cart';
+      submitBtn.disabled = false;
+    });
+  });
+
+  function showToast(msg) {
+    var toast = document.getElementById('b2b-toast');
+    document.getElementById('b2b-toast-msg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3500);
+  }
+
+})();
+</script>

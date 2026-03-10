@@ -1,0 +1,180 @@
+ <div class="collection-hero">
+   <div class="collection-hero__title-wrapper">
+            <h1 class="collection-hero__title page-width">
+                {{section.settings.page_title}}
+            </h1>
+          </div>
+            <div class="collection-hero__image" style="background-image: url({{ section.settings.banner_image | img_url: '2048x600', crop: 'top' }});"></div>
+         
+<!--           <div class="collection-hero__title-wrapper">
+            <h1 class="collection-hero__title page-width">
+                <span class="visually-hidden">{{ 'collections.general.collection_label' | t }}: </span>
+                {{ page.title }}
+            </h1>
+          </div> -->
+</div>
+<div class="sec1">
+<div class="custom-content page-width">
+      <div class="custom__item custom__item--text custom__item--1608999044c6d7b253-0 small--one-half medium-up--one-half align--top-middle">
+        <div class="custom__item-inner custom__item-inner--text">
+          
+              <div class="medium-up--text-left">
+                <img src="{{ section.settings.left_image | img_url: '2048x600' }}" />
+                
+              </div>
+            
+        </div>
+        </div>
+
+      <div class="custom__item custom__item--text small--one-half medium-up--one-half align--top-middle">
+        <div class="custom__item-inner custom__item-inner--text">
+          
+              <div class="medium-up--text-left">
+                
+                  <h4 class="h32">{{section.settings.sec1_title}}&nbsp;</h4>
+                {{ section.settings.right_text  }}
+              </div>
+          	 <div class="medium-up--text-left">
+               <a class="buttona" href="{{section.settings.button1}}"> See All Flavors</a>
+             </div>
+            
+        </div>
+        </div>
+</div>
+</div>
+<div class="custom-content page-width">
+  	<div class="custom__item custom__item--text small--one-half medium-up--one-half align--top-middle">
+        <div class="custom__item-inner custom__item-inner--text">
+          
+              <div class="medium-up--text-left">
+                
+                  <h4 class="h32">{{section.settings.sec2_title}}&nbsp;</h4>
+                {{ section.settings.sec2right_text  }}
+              </div>
+          	 <div class="medium-up--text-left">
+               <a class="buttona" href="{{section.settings.button}}">Order Now</a>
+             </div>
+          	 <div class="medium-up--text-left">
+               {{section.settings.collection_text}}
+             </div>
+            
+        </div>
+       </div>
+  
+      <div class="custom__item custom__item--text custom__item--1608999044c6d7b253-0 small--one-half medium-up--one-half align--top-middle">
+        <div class="custom__item-inner custom__item-inner--text">
+          
+              <div class="medium-up--text-left">
+                <img src="{{ section.settings.sec2left_image | img_url: '2048x600' }}" />
+                
+              </div>
+            
+        </div>
+        </div>
+
+      
+</div>
+<style>
+  .custom-content.page-width {
+    margin: auto;
+}
+  .collection-hero {
+    margin-bottom: 0;
+}
+  .sec1 {
+    background: #fff;
+    padding: 40px 0px 40px 0px;
+}
+  h4.h32 {
+    padding: 20px 0px;
+    color: #000;
+    font-size: 32px;
+}
+  a.buttona {
+    max-width: 100%;
+    display: inline-block;
+    word-wrap: break-word;
+    background-color: var(--color-btn-primary);
+    color: var(--color-btn-primary-text);
+    min-height: 2.125rem;
+    line-height: 2.2;
+    padding: 9px 18px;
+    margin: 20px 0px;
+}
+</style>
+{% schema %}
+  {
+    "name": "Events",
+    "settings": [
+	{
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo"    
+    },
+	{
+      "type": "text",
+      "id": "page_title",
+      "label": "Page Title"    
+   },
+  {
+  "type": "image_picker",
+  "id": "banner_image",
+  "label": "Event Banner Image"    
+  },
+  {
+      "type": "text",
+      "id": "sec1_title",
+      "label": "Title"    
+   },
+  {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"    
+   },
+  {
+  "type": "richtext",
+  "id": "right_text",
+  "label": "Right Text"    
+  },
+{
+  "type": "url",
+  "id": "button1",
+  "label": "Button Url"    
+  },
+  
+	{
+      "type": "text",
+      "id": "sec2_title",
+      "label": "Section 2 Title"    
+   },
+  {
+      "type": "image_picker",
+      "id": "sec2left_image",
+      "label": "Right Image"    
+   },
+  {
+  "type": "richtext",
+  "id": "sec2right_text",
+  "label": "Left Text"    
+  },
+{
+  "type": "url",
+  "id": "button",
+  "label": "Button Url"    
+  },
+ {
+  "type": "richtext",
+  "id": "collection_text",
+  "label": "Collection Text"    
+  }
+ ]
+
+  }
+
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
