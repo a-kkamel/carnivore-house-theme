@@ -46,7 +46,7 @@
         {% capture img_wrapper_id %}CustomImageWrapper--{{ forloop.index }}-{{ block.settings.image.id }}{% endcapture %}
 
         {% unless block.settings.image == blank %}
-          {% include 'image-style', image: block.settings.image, height: max_height, wrapper_id: img_wrapper_id, img_id: img_id %}
+          {% render 'image-style', image: block.settings.image, height: max_height, wrapper_id: img_wrapper_id, img_id: img_id %}
         {% endunless %}
       {% endif %}
 
@@ -55,20 +55,17 @@
           {% case block.type %}
             {% when 'image' %}
               {% if block.settings.image != blank %}
-                {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                 <div style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%;" data-image-loading-animation>
                   <img id="{{ img_id }}"
-                       class="custom__image lazyload js"
-                       data-src="{{ img_url }}"
-                       data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
-                       data-aspectratio="{{ block.settings.image.aspect_ratio }}"
-                       data-sizes="auto"
+                       class="custom__image"
+                       src="{{ block.settings.image | image_url: width: 1080 }}"
+                       srcset="{{ block.settings.image | image_url: width: 180 }} 180w, {{ block.settings.image | image_url: width: 360 }} 360w, {{ block.settings.image | image_url: width: 540 }} 540w, {{ block.settings.image | image_url: width: 720 }} 720w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1080 }} 1080w, {{ block.settings.image | image_url: width: 1296 }} 1296w, {{ block.settings.image | image_url: width: 1512 }} 1512w, {{ block.settings.image | image_url: width: 1728 }} 1728w, {{ block.settings.image | image_url: width: 2048 }} 2048w"
+                       sizes="auto"
+                       loading="lazy"
+                       width="{{ block.settings.image.width }}"
+                       height="{{ block.settings.image.height }}"
                        alt="{{ block.settings.image.alt | escape }}">
                 </div>
-                <noscript>
-                  {% capture image_size %}{{ max_height }}x{% endcapture %}
-                  {{ block.settings.image | img_url: image_size, scale: 2, crop: 'top' | img_tag: block.settings.image.alt, 'custom__image' }}
-                </noscript>
               {% else %}
                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
@@ -97,7 +94,7 @@
             {% when 'product' %}
               {%- assign product = all_products[block.settings.product] -%}
               {% if product.title.size > 0 %}
-                {% include 'product-card-grid', max_height: max_height, product: product %}
+                {% render 'product-card-grid', max_height: max_height, product: product %}
               {% else %}
                 {% comment %}
                   No product yet. Show onboarding one.
@@ -117,7 +114,7 @@
               {% endif %}
             {% when 'collection' %}
               {%- assign collection = collections[block.settings.collection] -%}
-              {% include 'collection-grid-item', collection: collection %}
+              {% render 'collection-grid-item', collection: collection %}
             {% when 'html' %}
               {% if block.settings.code != blank %}
                 {{ block.settings.code }}
@@ -141,16 +138,21 @@
                     {%- assign img = block.settings.cover_image -%}
                     {%- capture img_id -%}ArticleImage-{{ img.id }}{%- endcapture -%}
                     {%- capture img_wrapper_id -%}ArticleImageWrapper-{{ img.id }}{%- endcapture -%}
-                    {%- assign img_url = img | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-
-                    {% include 'image-style', image: img, height: 600, wrapper_id: img_wrapper_id, img_id: img_id %}
+                    {% render 'image-style', image: img, height: 600, wrapper_id: img_wrapper_id, img_id: img_id %}
 
                     <div class="blog-card__image-wrapper blog-card__image-wrapper--{{ block.settings.image_size }}">
                       <a href="{{ blog.url | default: '#' }}" class="blog-card__link">
-                        <div class="blog-card__overlay box ratio-container js lazyload" data-bgset="{% include 'bgset', image: img %}" data-sizes="auto" data-parent-fit="cover" data-image-loading-animation></div>
-                        <noscript>
-                          <div class="blog-card__overlay" style="background-image: url('{{ img | img_url: '1024x1024' }}')"></div>
-                        </noscript>
+                        <img
+                          src="{{ img | image_url: width: 1200 }}"
+                          srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1600 }} 1600w"
+                          sizes="(min-width: 1200px) 1200px, 100vw"
+                          loading="lazy"
+                          width="{{ img.width }}"
+                          height="{{ img.height }}"
+                          alt="{{ img.alt | escape }}"
+                          class="blog-card__overlay box ratio-container"
+                          style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;"
+                          data-image-loading-animation>
 
                         <div class="blog-card__title-wrapper">
                           <div class="blog-card__title h3">{{ blog.title }}</div>
@@ -184,8 +186,6 @@
                     {%- if article.image and cover_image != 'none' -%}
                       {%- capture img_id -%}ArticleImage-{{ article.image.id }}{%- endcapture -%}
                       {%- capture img_wrapper_id -%}ArticleImageWrapper-{{ article.image.id }}{%- endcapture -%}
-                      {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-
                       {% render 'image-style', image: article.image, height: 600, wrapper_id: img_wrapper_id, img_id: img_id %}
 
                       {%- style -%}
@@ -198,22 +198,16 @@
                       <div id="{{ img_wrapper_id }}" class="article__grid-image-wrapper article__grid-image-wrapper--{{ cover_image }} article-image-wrapper js">
                         <div class="article__grid-image-container" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;" data-image-loading-animation>
                           <img id="{{ img_id }}"
-                              class="article__list-image lazyload"
-                              data-src="{{ img_url }}"
-                              data-widths="[180, 360, 540, 720, 905, 1090, 1296, 1512, 1728, 2048]"
-                              data-aspectratio="{{ article.image.aspect_ratio }}"
-                              data-sizes="auto"
+                              class="article__list-image"
+                              src="{{ article.image | image_url: width: 1090 }}"
+                              srcset="{{ article.image | image_url: width: 180 }} 180w, {{ article.image | image_url: width: 360 }} 360w, {{ article.image | image_url: width: 540 }} 540w, {{ article.image | image_url: width: 720 }} 720w, {{ article.image | image_url: width: 905 }} 905w, {{ article.image | image_url: width: 1090 }} 1090w, {{ article.image | image_url: width: 1296 }} 1296w, {{ article.image | image_url: width: 1512 }} 1512w, {{ article.image | image_url: width: 1728 }} 1728w, {{ article.image | image_url: width: 2048 }} 2048w"
+                              sizes="auto"
+                              loading="lazy"
+                              width="{{ article.image.width }}"
+                              height="{{ article.image.height }}"
                               alt="">
                         </div>
                       </div>
-
-                      <noscript>
-                        <p>
-                          <a href="{{ article.url }}">
-                            {{ article | img_url: '455x300', scale: 2 | img_tag: article.title }}
-                          </a>
-                        </p>
-                      </noscript>
                     {%- endif -%}
 
                     <h2 class="article__title h3">{{ article.title }}</h2>
@@ -327,7 +321,7 @@
 
 
   {% if section.blocks.size == 0 %}
-    {% include 'no-blocks' %}
+    {% render 'no-blocks' %}
   {% endif %}
 </div>
 
