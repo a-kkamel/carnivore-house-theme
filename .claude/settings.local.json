@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"\nconst fs = require\\('fs'\\);\nconst css = fs.readFileSync\\('C:/Users/a_kka/Projects/shopify-theme/assets/custom.css', 'utf8'\\);\nconst matches = css.match\\(/[^{}]*grid-view-item[^{}]*\\\\{[^}]*\\\\}/g\\) || [];\nmatches.forEach\\(m => console.log\\(m.trim\\(\\) + '\\\\n---'\\)\\);\n\")"
+    ]
+  }
+}
