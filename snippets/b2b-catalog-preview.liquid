@@ -1,0 +1,242 @@
+{% comment %}
+  Public, read-only preview of the wholesale catalog for visitors who
+  aren't signed in yet (e.g. arriving from the trade-account QR code).
+  Shows the same wholesale-eligible products as b2b-catalog.liquid but with
+  no prices and no ordering controls — real pricing and cart access stay
+  behind the wholesale/b2b customer tag.
+{% endcomment %}
+{% assign source_handles = 'beef,poultry,lamb,goat,jerky-charcuterie,australian-lamb-1,specialty-items' | split: ',' %}
+{% assign b2b_products = collections[source_handles[0]].products %}
+{% for handle in source_handles offset: 1 %}
+  {% assign b2b_products = b2b_products | concat: collections[handle].products %}
+{% endfor %}
+{% assign b2b_products = b2b_products | uniq %}
+
+<section class="b2b-preview">
+  <div class="b2b-preview__banner">
+    <div class="b2b-preview__banner-inner">
+      <div class="b2b-preview__banner-copy">
+        <span class="b2b-catalog__label">Wholesale Preview</span>
+        <h1 class="b2b-preview__banner-title">Sign in to see your trade rate</h1>
+        <p class="b2b-preview__banner-desc">Browsing is open to everyone. Case pricing, order minimums and checkout unlock once your wholesale account is approved.</p>
+      </div>
+      <a href="{{ routes.storefront_login_url }}" class="b2b-preview__cta">Sign In / Apply</a>
+    </div>
+  </div>
+
+  <div class="b2b-catalog__container">
+    <div class="b2b-catalog__header">
+      <span class="b2b-catalog__label">Wholesale Catalog</span>
+      <h2 class="b2b-catalog__title">Trade Price List</h2>
+      <p class="b2b-catalog__desc">A preview of what's available at wholesale. Sign in with an approved account to see case pricing and place an order.</p>
+    </div>
+
+    {% if b2b_products.size > 0 %}
+    <div class="b2b-grid">
+      {% for product in b2b_products %}
+        <div class="b2b-card">
+          <div class="b2b-card__img-wrap">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                class="b2b-card__img"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {% else %}
+              <div class="b2b-card__img-placeholder"><span>No Image</span></div>
+            {% endif %}
+            {% if product.available %}
+              <span class="b2b-card__badge b2b-card__badge--available">In Stock</span>
+            {% else %}
+              <span class="b2b-card__badge b2b-card__badge--oos">Out of Stock</span>
+            {% endif %}
+          </div>
+
+          <div class="b2b-card__body">
+            <p class="b2b-card__vendor">{{ product.vendor }}</p>
+            <h3 class="b2b-card__name">{{ product.title }}</h3>
+            <p class="b2b-card__desc">{{ product.description | strip_html | truncate: 90 }}</p>
+
+            <a href="{{ routes.storefront_login_url }}" class="b2b-card__locked">
+              <span class="b2b-card__locked-icon">🔒</span>
+              Sign in for wholesale &amp; case pricing
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p class="b2b-catalog__empty">No products found in the wholesale-eligible collections.</p>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.b2b-preview__banner {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 2.5rem 4rem;
+}
+.b2b-preview__banner-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.b2b-preview__banner-copy .b2b-catalog__label { color: #c9a96e; margin-bottom: 0.5rem; }
+.b2b-preview__banner-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem;
+}
+.b2b-preview__banner-desc {
+  color: #bbb;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0;
+}
+.b2b-preview__cta {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 0.9rem 2rem;
+  background: #22ad87;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.b2b-preview__cta:hover { background: #1a9470; color: #fff; }
+
+.b2b-catalog__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 6rem 4rem;
+  background: #f5f5f5;
+  color: #3a3a3a;
+}
+.b2b-catalog__header { text-align: center; margin-bottom: 4rem; }
+.b2b-catalog__label {
+  display: inline-block;
+  color: #22ad87;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.b2b-catalog__title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: #3a3a3a;
+  margin: 0.5rem 0 1rem;
+  letter-spacing: -0.02em;
+}
+.b2b-catalog__desc {
+  color: #666;
+  font-size: 0.95rem;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.b2b-catalog__empty { text-align: center; color: #888; padding: 4rem; }
+.b2b-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.b2b-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  transition: border-color 0.3s;
+  border-radius: 2px;
+}
+.b2b-card:hover { border-color: #22ad87; }
+.b2b-card__img-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+.b2b-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  filter: grayscale(35%);
+}
+.b2b-card:hover .b2b-card__img { transform: scale(1.04); }
+.b2b-card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-size: 0.8rem;
+}
+.b2b-card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  font-weight: 600;
+}
+.b2b-card__badge--available { background: #e8f8f3; color: #1a9470; }
+.b2b-card__badge--oos { background: #fef3ee; color: #c97a4e; }
+.b2b-card__body { padding: 1.5rem; }
+.b2b-card__vendor {
+  font-size: 0.65rem;
+  color: #22ad87;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.3rem;
+}
+.b2b-card__name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3a3a3a;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+.b2b-card__desc {
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+.b2b-card__locked {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  border-radius: 2px;
+  color: #888;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.b2b-card__locked:hover { border-color: #22ad87; color: #1a9470; }
+.b2b-card__locked-icon { font-size: 0.85rem; }
+
+@media (max-width: 768px) {
+  .b2b-preview__banner { padding: 2rem 1.5rem; }
+  .b2b-preview__cta { width: 100%; text-align: center; }
+  .b2b-catalog__container { padding: 3rem 1.5rem; }
+}
+</style>
