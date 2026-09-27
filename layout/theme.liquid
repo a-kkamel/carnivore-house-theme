@@ -234,25 +234,15 @@
   </ul>
  {% include 'smile-initializer' %}
 
-{% if request.page_type == 'customers/register' %}
-<script>
-  (function() {
-    var REDIRECT_PATH = 'account/register';
-
-    var selector = '#CustomerAccount, form[action$="/account"][method="post"]',
-        $form = document.querySelectorAll(selector)[0];
-
-    if ($form) {
-      $redirect = document.createElement('input');
-      $redirect.setAttribute('name', 'return_to');
-      $redirect.setAttribute('type', 'hidden');
-      $redirect.value = REDIRECT_PATH;
-      $form.appendChild($redirect);
-    }
-  })();
-</script>
-
-{% else %}
+{% comment %}
+  This used to branch on request.page_type == 'customers/register' to send
+  a different return_to for the native register page. That branch is dead:
+  this store's hosted Customer Accounts 302-redirects /account/register at
+  the platform level before the theme layout ever renders, so that
+  page_type can no longer occur. The form this still targets
+  (#CustomerAccount) lives on sections/quiz.liquid's classic
+  {% form 'create_customer' %}, which is unaffected by that migration.
+{% endcomment %}
 <script>
   (function() {
     var REDIRECT_PATH = 'pages/success';
@@ -268,12 +258,14 @@
       $form.appendChild($redirect);
     }
   })();
-  
 </script>
-{% endif %}
   <script>
   
-    $(".product-form__cart-submit span").text('add to box');
+    $(".product-form__cart-submit [data-add-to-cart-text]").each(function() {
+      if ($(this).text().trim().toLowerCase() === 'add to cart') {
+        $(this).text('add to box');
+      }
+    });
     
     
     function addItem(form_id,btnclass){
