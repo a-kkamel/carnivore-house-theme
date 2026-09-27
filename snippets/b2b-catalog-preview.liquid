@@ -1,16 +1,17 @@
 {% comment %}
   Public, read-only preview of the wholesale catalog for visitors who
   aren't signed in yet (e.g. arriving from the trade-account QR code).
-  Shows the same wholesale-eligible products as b2b-catalog.liquid but with
-  no prices and no ordering controls — real pricing and cart access stay
-  behind the wholesale/b2b customer tag.
+  Shows the same wholesale-eligible products as b2b-catalog.liquid (sourced
+  from the 'wholesale' collection, whose rule is TAG equals
+  'wholesale-eligible') but with no prices and no ordering controls — real
+  pricing and cart access stay behind the wholesale/b2b customer tag.
+  collection.products defaults to a 50-item page in Liquid, so this runs
+  inside {% paginate %} (up to 250, the platform max) to fetch all 113+
+  members — {% endpaginate %} closes at the end of this file. No pager UI
+  is rendered.
 {% endcomment %}
-{% assign source_handles = 'beef,poultry,lamb,goat,jerky-charcuterie,australian-lamb-1,specialty-items' | split: ',' %}
-{% assign b2b_products = collections[source_handles[0]].products %}
-{% for handle in source_handles offset: 1 %}
-  {% assign b2b_products = b2b_products | concat: collections[handle].products %}
-{% endfor %}
-{% assign b2b_products = b2b_products | uniq %}
+{% paginate collections['wholesale'].products by 250 %}
+{% assign b2b_products = collections['wholesale'].products %}
 
 <section class="b2b-preview">
   <div class="b2b-preview__banner">
@@ -240,3 +241,4 @@
   .b2b-catalog__container { padding: 3rem 1.5rem; }
 }
 </style>
+{% endpaginate %}
