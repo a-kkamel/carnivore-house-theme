@@ -391,6 +391,7 @@
       "sale_price": "Sale price",
       "quantity": "Quantity",
       "add_to_cart": "Add to cart",
+      "pre_order": "Pre-order",
       "loader_label": "Adding product to your cart",
       "back_to_collection": "Back to {{ title }}",
       "vendor": "Vendor",

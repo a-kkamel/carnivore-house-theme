@@ -14,6 +14,10 @@
   {%- assign enable_image_zoom = section.settings.enable_image_zoom -%}
   {%- assign compare_at_price = current_variant.compare_at_price -%}
   {%- assign price = current_variant.price -%}
+  {%- assign is_preorder = false -%}
+  {%- if current_variant.inventory_management != blank and current_variant.inventory_policy == 'continue' and current_variant.inventory_quantity <= 0 -%}
+    {%- assign is_preorder = true -%}
+  {%- endif -%}
 
   {% case section.settings.media_size %}
     {% when 'small' %}
@@ -185,10 +189,14 @@
 
             <select name="id" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
               {% for variant in product.variants %}
+                {%- assign variant_is_preorder = false -%}
+                {%- if variant.inventory_management != blank and variant.inventory_policy == 'continue' and variant.inventory_quantity <= 0 -%}
+                  {%- assign variant_is_preorder = true -%}
+                {%- endif -%}
                 <option value="{{ variant.id }}"
                   {%- if variant == current_variant %} selected="selected" {%- endif -%}
                 >
-                  {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                  {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% elsif variant_is_preorder %} - {{ 'products.product.pre_order' | t }}{% endif %}
                 </option>
               {% endfor %}
             </select>
@@ -221,13 +229,15 @@
               >
                 <button type="submit" name="add"
                   {% unless current_variant.available %} aria-disabled="true"{% endunless %}
-                  aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
+                  aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% elsif is_preorder %}{{ 'products.product.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
                   class="btn product-form__cart-submit{% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
                   {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
                   data-add-to-cart>
                   <span data-add-to-cart-text>
                     {% unless current_variant.available %}
                       {{ 'products.product.sold_out' | t }}
+                    {% elsif is_preorder %}
+                      {{ 'products.product.pre_order' | t }}
                     {% else %}
                       {{ 'products.product.add_to_cart' | t }}
                     {% endunless %}
@@ -242,6 +252,11 @@
               </div>
             </div>
           {% endform %}
+
+          <div class="preorder-notice" data-preorder-notice style="margin-top: 16px; padding: 14px 16px; background: #fff8e1; border-left: 4px solid #f5a623; border-radius: 4px; font-size: 14px; color: #3a3a3a;{% unless is_preorder %} display: none;{% endunless %}">
+            <strong>Pre-Order Notice</strong><br>
+            {{ section.settings.preorder_message }}
+          </div>
         </div>
 
         {%- comment -%}
@@ -303,7 +318,18 @@
   </script>
 {% endunless %}
 
-
+<script>
+  document.getElementById('ProductSection-{{ section.id }}').addEventListener('variantChange', function(event) {
+    var variant = event.detail.variant;
+    var notice = document.querySelector('#ProductSection-{{ section.id }} [data-preorder-notice]');
+    if (!notice) return;
+    var isPreorder = variant &&
+      variant.inventory_management &&
+      variant.inventory_policy === 'continue' &&
+      variant.inventory_quantity <= 0;
+    notice.style.display = isPreorder ? '' : 'none';
+  });
+</script>
 
 {% schema %}
 {
@@ -331,6 +357,19 @@
     "zh-TW": "產品頁面"
   },
   "settings": [
+    {
+      "type": "textarea",
+      "id": "preorder_message",
+      "label": {
+        "en": "Pre-order notice message"
+      },
+      "default": {
+        "en": "This item is currently available for pre-order. Orders are charged immediately and ship within [X] weeks."
+      },
+      "info": {
+        "en": "Shown on the product page when a variant is set to continue selling when out of stock."
+      }
+    },
     {
       "type": "checkbox",
       "id": "show_quantity_selector",
