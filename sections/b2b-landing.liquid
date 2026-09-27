@@ -20,12 +20,14 @@
     </div>
   {% endif %}
 {% else %}
-  <script>
-    window.location.href = '{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}';
-  </script>
-  <noscript>
-    <p>Please <a href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">log in</a> to access the wholesale portal.</p>
-  </noscript>
+  {% comment %}
+    Anonymous visitors (e.g. from the trade-account QR code) get a
+    read-only preview of the wholesale catalog instead of being bounced
+    straight to login — no prices or ordering, just a "sign in for your
+    rate" CTA. Real pricing and cart access still require the wholesale/b2b
+    customer tag, checked above once they do sign in.
+  {% endcomment %}
+  {% render 'b2b-catalog-preview' %}
 {% endif %}
 
 <style>
