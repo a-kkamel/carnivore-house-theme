@@ -1,17 +1,22 @@
 {% comment %}
-  Wholesale catalog. Sources products from every retail collection (not the
-  legacy 'wholesale' automated collection, whose rule only matched "Ground
-  chicken"). Case pricing/ordering activates per-product once it has a
-  variant option named "Unit" with values "Each" / "Case" — until then the
-  card falls back to standard each-based pricing so untouched products still
-  work.
+  Wholesale catalog. Sources from the 'wholesale' automated collection,
+  whose rule is TAG equals 'wholesale-eligible' — every product carrying
+  that tag is a member. (Its rule used to be TITLE contains "Ground
+  chicken", matching ~1 product; fixed by tagging the real wholesale set
+  and pointing the rule at that tag instead.) Case pricing/ordering
+  activates per-product once it has a variant option named "Unit" with
+  values "Each" / "Case" — until then the card falls back to standard
+  each-based pricing so untouched products still work.
 {% endcomment %}
-{% assign source_handles = 'beef,poultry,lamb,goat,jerky-charcuterie,australian-lamb-1,specialty-items' | split: ',' %}
-{% assign b2b_products = collections[source_handles[0]].products %}
-{% for handle in source_handles offset: 1 %}
-  {% assign b2b_products = b2b_products | concat: collections[handle].products %}
-{% endfor %}
-{% assign b2b_products = b2b_products | uniq %}
+{% comment %}
+  collection.products defaults to a 50-item page in Liquid; the Wholesale
+  collection has 113+ members, so this must run inside {% paginate %} (up
+  to 250, the platform max) to actually fetch all of them — {% endpaginate %}
+  closes at the end of this file. No pager UI is rendered; this is just
+  "fetch more than 50," not real paged browsing.
+{% endcomment %}
+{% paginate collections['wholesale'].products by 250 %}
+{% assign b2b_products = collections['wholesale'].products %}
 
 <section class="b2b-catalog" id="b2b-catalog">
   <div class="b2b-catalog__container">
@@ -849,3 +854,4 @@
 
 })();
 </script>
+{% endpaginate %}
