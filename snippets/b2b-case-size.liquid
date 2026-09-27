@@ -1,0 +1,16 @@
+{%- comment -%}
+  Outputs the number of units in a case variant, or nothing if unknown.
+  Uses the wholesale.case_size metafield (variant, then product) when set;
+  otherwise reads the first number after "case" in the variant title:
+  "Case of 10" → 10, "Case: 4 pack (2 x 12 oz)" → 4, "Case : 5 x 2 lb" → 5.
+  Call it inside a capture and strip the result.
+{%- endcomment -%}
+{%- assign size = variant.metafields.wholesale.case_size | default: product.metafields.wholesale.case_size -%}
+{%- if size == blank -%}
+  {%- assign after_case = variant.title | downcase | split: 'case' | last | replace: ':', ' ' | replace: '(', ' ' | replace: ')', ' ' | replace: 'of ', ' ' -%}
+  {%- assign token = after_case | split: ' ' | first -%}
+  {%- assign n = token | times: 1 -%}
+  {%- assign n_str = n | append: '' -%}
+  {%- if n > 0 and n_str == token -%}{%- assign size = n -%}{%- endif -%}
+{%- endif -%}
+{{- size -}}

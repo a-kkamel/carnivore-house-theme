@@ -4,9 +4,9 @@
   that tag is a member. (Its rule used to be TITLE contains "Ground
   chicken", matching ~1 product; fixed by tagging the real wholesale set
   and pointing the rule at that tag instead.) Case pricing/ordering
-  activates per-product once it has a variant option named "Unit" with
-  values "Each" / "Case" — until then the card falls back to standard
-  each-based pricing so untouched products still work.
+  activates per-product for any variant whose title contains "case"
+  (e.g. "Case: 4 pack", "Case of 10"); products without one fall back to
+  standard single-unit pricing.
 {% endcomment %}
 {% comment %}
   collection.products defaults to a 50-item page in Liquid; the Wholesale
@@ -30,73 +30,32 @@
     {% if b2b_products.size > 0 %}
     <div class="b2b-grid">
       {% for product in b2b_products %}
-        {% comment %} -- find the 'Unit' option (Each / Case) if this product has one -- {% endcomment %}
-        {% assign unit_index = -1 %}
-        {% for opt in product.options_with_values %}
-          {% if opt.name == 'Unit' %}
-            {% assign unit_index = forloop.index0 %}
-          {% endif %}
-        {% endfor %}
-
-        {% assign each_variant = product.selected_or_first_available_variant %}
+        {% comment %}
+          A variant is a case variant when its title contains "case" (any
+          capitalisation, any option name) — the same test as the Wholesale
+          collection's "Variant title contains Case" condition. Any other
+          variant is a single unit; the first one is shown as "Per Item".
+        {% endcomment %}
+        {% assign each_variant = nil %}
         {% assign case_variant = nil %}
         {% assign case_count = 0 %}
-
-        {% if unit_index > -1 %}
-          {% for v in product.variants %}
-            {% assign opt_val = '' %}
-            {% if unit_index == 0 %}{% assign opt_val = v.option1 %}{% endif %}
-            {% if unit_index == 1 %}{% assign opt_val = v.option2 %}{% endif %}
-            {% if unit_index == 2 %}{% assign opt_val = v.option3 %}{% endif %}
-            {% assign opt_val = opt_val | downcase %}
-            {% if opt_val == 'case' %}
-              {% assign case_count = case_count | plus: 1 %}
-              {% unless case_variant %}{% assign case_variant = v %}{% endunless %}
-            {% elsif opt_val == 'each' %}
-              {% assign each_variant = v %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+        {% for v in product.variants %}
+          {% assign v_title = v.title | downcase %}
+          {% if v_title contains 'case' %}
+            {% assign case_count = case_count | plus: 1 %}
+            {% unless case_variant %}{% assign case_variant = v %}{% endunless %}
+          {% else %}
+            {% unless each_variant %}{% assign each_variant = v %}{% endunless %}
+          {% endif %}
+        {% endfor %}
 
         {% assign has_case = false %}
         {% if case_variant %}{% assign has_case = true %}{% endif %}
 
-        {% assign case_size = blank %}
+        {% capture case_size %}{% if has_case %}{% render 'b2b-case-size', variant: case_variant, product: product %}{% endif %}{% endcapture %}
+        {% assign case_size = case_size | strip %}
 
-        {% comment %}
-          Multi-size products (e.g. a "Size" option alongside "Unit") pair
-          each Case variant with the Each variant that shares every OTHER
-          option value, rather than assuming a single each/case pair. The
-          "signature" is every option value except the Unit one, joined —
-          two variants with the same signature are the same size/cut, just
-          different units.
-        {% endcomment %}
-        {% if has_case %}
-          {% assign default_sig = '' %}
-          {% if unit_index != 0 %}{% assign default_sig = default_sig | append: case_variant.option1 | append: '|' %}{% endif %}
-          {% if unit_index != 1 %}{% assign default_sig = default_sig | append: case_variant.option2 | append: '|' %}{% endif %}
-          {% if unit_index != 2 %}{% assign default_sig = default_sig | append: case_variant.option3 | append: '|' %}{% endif %}
-
-          {% for v in product.variants %}
-            {% assign v_opt_val = '' %}
-            {% if unit_index == 0 %}{% assign v_opt_val = v.option1 %}{% endif %}
-            {% if unit_index == 1 %}{% assign v_opt_val = v.option2 %}{% endif %}
-            {% if unit_index == 2 %}{% assign v_opt_val = v.option3 %}{% endif %}
-            {% assign v_opt_val = v_opt_val | downcase %}
-            {% if v_opt_val == 'each' %}
-              {% assign v_sig = '' %}
-              {% if unit_index != 0 %}{% assign v_sig = v_sig | append: v.option1 | append: '|' %}{% endif %}
-              {% if unit_index != 1 %}{% assign v_sig = v_sig | append: v.option2 | append: '|' %}{% endif %}
-              {% if unit_index != 2 %}{% assign v_sig = v_sig | append: v.option3 | append: '|' %}{% endif %}
-              {% if v_sig == default_sig %}{% assign each_variant = v %}{% endif %}
-            {% endif %}
-          {% endfor %}
-
-          {% assign case_size = case_variant.metafields.wholesale.case_size %}
-          {% if case_size == blank %}{% assign case_size = product.metafields.wholesale.case_size %}{% endif %}
-        {% endif %}
-
-        {% assign display_variant = each_variant %}
+        {% assign display_variant = product.selected_or_first_available_variant %}
         {% if has_case %}{% assign display_variant = case_variant %}{% endif %}
 
         <div class="b2b-card">
@@ -137,8 +96,8 @@
                 </div>
               </div>
               {% assign show_savings = false %}
-              {% if case_size != blank and case_size > 0 and each_variant %}
-                {% assign case_size_num = case_size | times: 1 %}
+              {% assign case_size_num = case_size | times: 1 %}
+              {% if case_size_num > 0 and each_variant %}
                 {% assign per_unit_in_case = case_variant.price | divided_by: case_size_num %}
                 {% if per_unit_in_case < each_variant.price %}
                   {% assign show_savings = true %}
@@ -172,45 +131,19 @@
             {% if has_case and case_count > 1 %}
             <select class="b2b-card__variant-select">
               {% for v in product.variants %}
-                {% assign opt_val = '' %}
-                {% if unit_index == 0 %}{% assign opt_val = v.option1 %}{% endif %}
-                {% if unit_index == 1 %}{% assign opt_val = v.option2 %}{% endif %}
-                {% if unit_index == 2 %}{% assign opt_val = v.option3 %}{% endif %}
-                {% assign opt_val = opt_val | downcase %}
-                {% if opt_val == 'case' %}
-                  {% assign v_sig = '' %}
-                  {% if unit_index != 0 %}{% assign v_sig = v_sig | append: v.option1 | append: '|' %}{% endif %}
-                  {% if unit_index != 1 %}{% assign v_sig = v_sig | append: v.option2 | append: '|' %}{% endif %}
-                  {% if unit_index != 2 %}{% assign v_sig = v_sig | append: v.option3 | append: '|' %}{% endif %}
-
-                  {% assign paired_each = nil %}
-                  {% for e in product.variants %}
-                    {% assign e_opt_val = '' %}
-                    {% if unit_index == 0 %}{% assign e_opt_val = e.option1 %}{% endif %}
-                    {% if unit_index == 1 %}{% assign e_opt_val = e.option2 %}{% endif %}
-                    {% if unit_index == 2 %}{% assign e_opt_val = e.option3 %}{% endif %}
-                    {% assign e_opt_val = e_opt_val | downcase %}
-                    {% if e_opt_val == 'each' %}
-                      {% assign e_sig = '' %}
-                      {% if unit_index != 0 %}{% assign e_sig = e_sig | append: e.option1 | append: '|' %}{% endif %}
-                      {% if unit_index != 1 %}{% assign e_sig = e_sig | append: e.option2 | append: '|' %}{% endif %}
-                      {% if unit_index != 2 %}{% assign e_sig = e_sig | append: e.option3 | append: '|' %}{% endif %}
-                      {% if e_sig == v_sig %}{% assign paired_each = e %}{% endif %}
-                    {% endif %}
-                  {% endfor %}
-
-                  {% assign v_case_size = v.metafields.wholesale.case_size %}
-                  {% if v_case_size == blank %}{% assign v_case_size = product.metafields.wholesale.case_size %}{% endif %}
-
+                {% assign v_title = v.title | downcase %}
+                {% if v_title contains 'case' %}
+                  {% capture v_case_size %}{% render 'b2b-case-size', variant: v, product: product %}{% endcapture %}
+                  {% assign v_case_size = v_case_size | strip %}
                   <option
                     value="{{ v.id }}"
                     {% unless v.available %}disabled{% endunless %}
                     data-case-price-fmt="{{ v.price | money }}"
                     data-case-price-raw="{{ v.price }}"
-                    {% if paired_each %}data-each-price-fmt="{{ paired_each.price | money }}" data-each-price-raw="{{ paired_each.price }}"{% endif %}
+                    {% if each_variant %}data-each-price-fmt="{{ each_variant.price | money }}" data-each-price-raw="{{ each_variant.price }}"{% endif %}
                     {% if v_case_size != blank %}data-case-size="{{ v_case_size }}"{% endif %}
                   >
-                    {{ v.title | replace: ' / Case', '' | replace: 'Case / ', '' }}{% unless v.available %} — Sold Out{% endunless %}
+                    {{ v.title }}{% unless v.available %} — Sold Out{% endunless %}
                   </option>
                 {% endif %}
               {% endfor %}
@@ -721,34 +654,19 @@
 
   var allProducts = [
     {% for product in b2b_products %}
-    {% assign unit_index = -1 %}
-    {% for opt in product.options_with_values %}
-      {% if opt.name == 'Unit' %}{% assign unit_index = forloop.index0 %}{% endif %}
+    {% assign has_any_case = false %}
+    {% for v in product.variants %}
+      {% assign v_title = v.title | downcase %}
+      {% if v_title contains 'case' %}{% assign has_any_case = true %}{% endif %}
     {% endfor %}
-    {% if unit_index > -1 %}
-      {% assign has_any_case = false %}
-      {% for v in product.variants %}
-        {% assign opt_val = '' %}
-        {% if unit_index == 0 %}{% assign opt_val = v.option1 %}{% endif %}
-        {% if unit_index == 1 %}{% assign opt_val = v.option2 %}{% endif %}
-        {% if unit_index == 2 %}{% assign opt_val = v.option3 %}{% endif %}
-        {% assign opt_val = opt_val | downcase %}
-        {% if opt_val == 'case' %}{% assign has_any_case = true %}{% endif %}
-      {% endfor %}
-    {% endif %}
     {
       title: {{ product.title | json }},
       variants: [
         {% for v in product.variants %}
           {% assign include_variant = true %}
-          {% if unit_index > -1 and has_any_case %}
-            {% assign opt_val = '' %}
-            {% if unit_index == 0 %}{% assign opt_val = v.option1 %}{% endif %}
-            {% if unit_index == 1 %}{% assign opt_val = v.option2 %}{% endif %}
-            {% if unit_index == 2 %}{% assign opt_val = v.option3 %}{% endif %}
-            {% assign opt_val = opt_val | downcase %}
-            {% assign include_variant = false %}
-            {% if opt_val == 'case' %}{% assign include_variant = true %}{% endif %}
+          {% if has_any_case %}
+            {% assign v_title = v.title | downcase %}
+            {% unless v_title contains 'case' %}{% assign include_variant = false %}{% endunless %}
           {% endif %}
           {% if include_variant %}
           { id: {{ v.id }}, title: {{ v.title | json }}, available: {{ v.available }} },
